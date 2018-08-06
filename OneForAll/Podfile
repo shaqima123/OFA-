@@ -1,0 +1,12 @@
+source 'https://github.com/CocoaPods/Specs.git'
+ platform :ios, "10.0"
+
+ target "OneForAll" do
+pod 'ReactiveObjC'
+pod 'Masonry'
+pod 'SDWebImage'
+pod 'YYImage'
+pod 'YYWebImage'
+pod 'GPUImage'
+
+end

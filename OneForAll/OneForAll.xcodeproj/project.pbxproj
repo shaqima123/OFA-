@@ -15,6 +15,8 @@
 		4F2E5E0B211040D5002C4101 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2E5E0A211040D5002C4101 /* main.m */; };
 		4F2E5E15211040D6002C4101 /* OneForAllTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2E5E14211040D6002C4101 /* OneForAllTests.m */; };
 		4F2E5E20211040D6002C4101 /* OneForAllUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2E5E1F211040D6002C4101 /* OneForAllUITests.m */; };
+		4F9F4DEB211822A300F316AE /* OFAHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9F4DEA211822A300F316AE /* OFAHomeViewController.m */; };
+		FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01816869B8893B14C7414C20 /* Pods-OneForAll.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneForAll.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneForAll/Pods-OneForAll.release.xcconfig"; sourceTree = "<group>"; };
+		11E9396B5B0008C4F52FA507 /* Pods-OneForAll.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneForAll.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneForAll/Pods-OneForAll.debug.xcconfig"; sourceTree = "<group>"; };
 		4F2E5DF8211040D4002C4101 /* OneForAll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneForAll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F2E5DFB211040D4002C4101 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4F2E5DFC211040D4002C4101 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -51,6 +55,9 @@
 		4F2E5E1B211040D6002C4101 /* OneForAllUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OneForAllUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F2E5E1F211040D6002C4101 /* OneForAllUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneForAllUITests.m; sourceTree = "<group>"; };
 		4F2E5E21211040D6002C4101 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F9F4DE9211822A300F316AE /* OFAHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAHomeViewController.h; sourceTree = "<group>"; };
+		4F9F4DEA211822A300F316AE /* OFAHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAHomeViewController.m; sourceTree = "<group>"; };
+		6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneForAll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +93,8 @@
 				4F2E5E13211040D6002C4101 /* OneForAllTests */,
 				4F2E5E1E211040D6002C4101 /* OneForAllUITests */,
 				4F2E5DF9211040D4002C4101 /* Products */,
+				7A74E72794973EC026ED0365 /* Pods */,
+				897F07834B62CA903DF6C551 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -202,6 +212,8 @@
 		4F2E5E352110451A002C4101 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				4F9F4DE9211822A300F316AE /* OFAHomeViewController.h */,
+				4F9F4DEA211822A300F316AE /* OFAHomeViewController.m */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -220,6 +232,23 @@
 			path = Camera;
 			sourceTree = "<group>";
 		};
+		7A74E72794973EC026ED0365 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				11E9396B5B0008C4F52FA507 /* Pods-OneForAll.debug.xcconfig */,
+				01816869B8893B14C7414C20 /* Pods-OneForAll.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		897F07834B62CA903DF6C551 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -227,9 +256,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F2E5E24211040D6002C4101 /* Build configuration list for PBXNativeTarget "OneForAll" */;
 			buildPhases = (
+				B608E2166D4EFC097319EA8B /* [CP] Check Pods Manifest.lock */,
 				4F2E5DF4211040D4002C4101 /* Sources */,
 				4F2E5DF5211040D4002C4101 /* Frameworks */,
 				4F2E5DF6211040D4002C4101 /* Resources */,
+				D8CB11CEBA5C52DA89F4FFA6 /* [CP] Embed Pods Frameworks */,
+				24AA2BA5B12CAC3248B0ACE6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -345,11 +377,74 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		24AA2BA5B12CAC3248B0ACE6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-OneForAll/Pods-OneForAll-resources.sh",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup.png",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_amatorka.png",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_miss_etikate.png",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_1.png",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_2.png",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_amatorka.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_miss_etikate.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_2.png",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneForAll/Pods-OneForAll-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B608E2166D4EFC097319EA8B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneForAll-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8CB11CEBA5C52DA89F4FFA6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneForAll/Pods-OneForAll-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4F2E5DF4211040D4002C4101 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F9F4DEB211822A300F316AE /* OFAHomeViewController.m in Sources */,
 				4F2E5E00211040D4002C4101 /* ViewController.m in Sources */,
 				4F2E5E0B211040D5002C4101 /* main.m in Sources */,
 				4F2E5DFD211040D4002C4101 /* AppDelegate.m in Sources */,
@@ -519,15 +614,13 @@
 		};
 		4F2E5E25211040D6002C4101 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11E9396B5B0008C4F52FA507 /* Pods-OneForAll.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZA747HXW4Q;
 				INFOPLIST_FILE = OneForAll/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kira.OneForAll;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -536,15 +629,13 @@
 		};
 		4F2E5E26211040D6002C4101 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01816869B8893B14C7414C20 /* Pods-OneForAll.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZA747HXW4Q;
 				INFOPLIST_FILE = OneForAll/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kira.OneForAll;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -558,11 +649,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZA747HXW4Q;
 				INFOPLIST_FILE = OneForAllTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kira.OneForAllTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -577,11 +664,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZA747HXW4Q;
 				INFOPLIST_FILE = OneForAllTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kira.OneForAllTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -595,11 +678,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZA747HXW4Q;
 				INFOPLIST_FILE = OneForAllUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kira.OneForAllUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -613,11 +692,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZA747HXW4Q;
 				INFOPLIST_FILE = OneForAllUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kira.OneForAllUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
