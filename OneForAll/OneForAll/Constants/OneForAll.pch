@@ -1,0 +1,23 @@
+//
+//  OneForAll.pch
+//  OneForAll
+//
+//  Created by Kira on 2018/8/10.
+//  Copyright © 2018 Kira. All rights reserved.
+//
+
+#ifndef OneForAll_pch
+#define OneForAll_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <ReactiveObjC/ReactiveObjC.h>
+#import <ReactiveObjC/RACEXTScope.h>
+#import "Masonry.h"
+#import "UIColor+random.h"
+#import "OFAMacro.h"
+
+
+#endif /* OneForAll_pch */
