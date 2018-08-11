@@ -8,6 +8,7 @@
 
 #import "OFAHomeViewController.h"
 #import "OFAHomeCell.h"
+#import "OFACameraViewController.h"
 
 @interface OFAHomeViewController ()<
 UICollectionViewDelegate,
@@ -35,6 +36,7 @@ UICollectionViewDataSource
 
 - (void)initUI {
     [self collectionView];
+    [self.navigationController.navigationBar setHidden:YES];
 }
 
 #pragma mark get - set
@@ -100,7 +102,10 @@ UICollectionViewDataSource
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"click");
+    if (indexPath.row == 0) {
+        OFACameraViewController *cameraViewController = [[OFACameraViewController alloc] init];
+        [self.navigationController pushViewController:cameraViewController animated:YES];
+    }
 }
 
 @end

@@ -21,8 +21,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     OFAHomeViewController *rootViewController = [[OFAHomeViewController alloc] init];;
+    UINavigationController *navigationView = [[UINavigationController alloc]initWithRootViewController:rootViewController];
     
-    self.window.rootViewController = rootViewController;
+    self.window.rootViewController = navigationView;
     
     [self.window makeKeyAndVisible];
         
