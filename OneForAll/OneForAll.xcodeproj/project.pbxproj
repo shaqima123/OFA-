@@ -21,6 +21,7 @@
 		4F428C24211EADA9004F66B3 /* OFAStillCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C23211EADA9004F66B3 /* OFAStillCamera.m */; };
 		4F428C27211EE672004F66B3 /* OFACameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C26211EE672004F66B3 /* OFACameraPreviewView.m */; };
 		4F428C2A211F0725004F66B3 /* OFAPhotoCaptureDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C29211F0725004F66B3 /* OFAPhotoCaptureDelegate.m */; };
+		4F428C2D211F1C23004F66B3 /* OFACameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C2C211F1C23004F66B3 /* OFACameraViewController.m */; };
 		FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +75,8 @@
 		4F428C26211EE672004F66B3 /* OFACameraPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFACameraPreviewView.m; sourceTree = "<group>"; };
 		4F428C28211F0725004F66B3 /* OFAPhotoCaptureDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAPhotoCaptureDelegate.h; sourceTree = "<group>"; };
 		4F428C29211F0725004F66B3 /* OFAPhotoCaptureDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAPhotoCaptureDelegate.m; sourceTree = "<group>"; };
+		4F428C2B211F1C23004F66B3 /* OFACameraViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFACameraViewController.h; sourceTree = "<group>"; };
+		4F428C2C211F1C23004F66B3 /* OFACameraViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFACameraViewController.m; sourceTree = "<group>"; };
 		6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneForAll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -250,6 +253,8 @@
 		4F2E5E372110451A002C4101 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				4F428C2B211F1C23004F66B3 /* OFACameraViewController.h */,
+				4F428C2C211F1C23004F66B3 /* OFACameraViewController.m */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -513,6 +518,7 @@
 				4F428C10211D6AFA004F66B3 /* PHAsset+extension.m in Sources */,
 				4F428C27211EE672004F66B3 /* OFACameraPreviewView.m in Sources */,
 				4F428C24211EADA9004F66B3 /* OFAStillCamera.m in Sources */,
+				4F428C2D211F1C23004F66B3 /* OFACameraViewController.m in Sources */,
 				4F2E5DFD211040D4002C4101 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

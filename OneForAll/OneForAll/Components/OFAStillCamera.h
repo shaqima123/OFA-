@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-
+#import "OFACameraPreviewView.h"
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM( NSInteger, OFACameraSetupResult ) {
@@ -34,6 +34,9 @@ typedef NS_ENUM( NSInteger, OFACameraSetupResult ) {
 - (void)stopCamera;
 - (void)capturePhoto;
 - (void)configureSession;
+
+- (void)addNotificationToCaptureSession;
+- (void)removeAllNotification;
 
 @end
 

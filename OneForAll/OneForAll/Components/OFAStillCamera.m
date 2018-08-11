@@ -44,15 +44,19 @@
 
 #pragma mark Public Methods
 - (void)startCamera {
-    if (!_session.isRunning) {
-        [_session startRunning];
-    }
+    dispatch_async( self.sessionQueue, ^{
+        if (!_session.isRunning) {
+            [_session startRunning];
+        }
+    });
 }
 
 - (void)stopCamera {
-    if (_session.isRunning) {
-        [_session stopRunning];
-    }
+    dispatch_async( self.sessionQueue, ^{
+        if (_session.isRunning) {
+            [_session stopRunning];
+        }
+    });
 }
 
 - (void)capturePhoto {
@@ -201,40 +205,17 @@
 
 #pragma mark Notification
 - (void)addNotificationToCaptureSession {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionError:) name:AVCaptureSessionRuntimeErrorNotification object:_session];
-    [_session addObserver:self forKeyPath:@"running" options:NSKeyValueObservingOptionNew context:nil];
-    [_session addObserver:self forKeyPath:@"interrupted" options:NSKeyValueObservingOptionNew context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:) name:AVCaptureDeviceSubjectAreaDidChangeNotification object:_videoInput.device];
 }
 
 - (void)removeAllNotification {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_session removeObserver:self forKeyPath:@"running"];
-    [_session removeObserver:self forKeyPath:@"interrupted"];
 }
 
-- (void)sessionError:(NSNotification *)notification {
-    NSLog(@"Session Error in Runtime");
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)subjectAreaDidChange:(NSNotification *)notification
 {
-    if ([keyPath isEqualToString:@"running"]) {
-        BOOL isRunning = ((AVCaptureSession *)object).running;
-        if (isRunning) {
-            NSLog(@"Session is Running...");
-        } else {
-            NSLog(@"Session Stop running!");
-        }
-    }
-    
-    if ([keyPath isEqualToString:@"interrupted"]) {
-        BOOL isInterrupted = ((AVCaptureSession *)object).interrupted;
-        if (isInterrupted) {
-            NSLog(@"Session is interrupted!");
-        } else {
-            NSLog(@"Session is not interrupted.");
-        }
-    }
+    CGPoint devicePoint = CGPointMake( 0.5, 0.5 );
+    //    [self focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:NO];
 }
 
 
