@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OFAHomeCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *iconImage;
 @property (weak, nonatomic) IBOutlet UILabel *funcName;
+@property (weak, nonatomic) IBOutlet UIImageView *bgImageView;
 
 @end
 

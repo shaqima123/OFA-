@@ -12,7 +12,12 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    [self.layer setCornerRadius:10.f];
+    [self.layer masksToBounds];
+    [self.funcName setTextAlignment:NSTextAlignmentRight];
+    [self.funcName setTextColor:[UIColor whiteColor]];
+    [self.funcName setFont:[UIFont boldSystemFontOfSize:35.f]];
+    [self.iconImage setContentMode:UIViewContentModeScaleAspectFit];
 }
 
 @end

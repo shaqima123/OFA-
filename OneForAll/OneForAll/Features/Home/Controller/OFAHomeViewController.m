@@ -74,6 +74,15 @@ UICollectionViewDataSource
 {
     static NSString * CellIdentifier = @"OFAHomeCell";
     OFAHomeCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    if (indexPath.row == 0) {
+        cell.iconImage.image = [UIImage imageNamed:@"btn_home_camera"];
+        cell.bgImageView.image = [UIImage imageNamed:@"img_home_camera"];
+    }
+    if (indexPath.row == 1) {
+        cell.iconImage.image = [UIImage imageNamed:@"btn_home_lab"];
+        cell.bgImageView.image = [UIImage imageNamed:@"img_home_lab"];
+    }
+    
     cell.funcName.text = (NSString *)[self.dataArray objectAtIndex:indexPath.row];
     cell.backgroundColor = [UIColor randomColor];
     return cell;
