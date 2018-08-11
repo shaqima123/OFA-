@@ -18,6 +18,7 @@
 		4F428C17211D70C7004F66B3 /* OFAHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C14211D70C7004F66B3 /* OFAHomeViewController.m */; };
 		4F428C1F211D7167004F66B3 /* OFAHomeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C1D211D7167004F66B3 /* OFAHomeCell.m */; };
 		4F428C20211D7167004F66B3 /* OFAHomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F428C1E211D7167004F66B3 /* OFAHomeCell.xib */; };
+		4F428C24211EADA9004F66B3 /* OFAStillCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C23211EADA9004F66B3 /* OFAStillCamera.m */; };
 		FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,8 @@
 		4F428C1C211D7167004F66B3 /* OFAHomeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAHomeCell.h; sourceTree = "<group>"; };
 		4F428C1D211D7167004F66B3 /* OFAHomeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAHomeCell.m; sourceTree = "<group>"; };
 		4F428C1E211D7167004F66B3 /* OFAHomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OFAHomeCell.xib; sourceTree = "<group>"; };
+		4F428C22211EADA9004F66B3 /* OFAStillCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAStillCamera.h; sourceTree = "<group>"; };
+		4F428C23211EADA9004F66B3 /* OFAStillCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAStillCamera.m; sourceTree = "<group>"; };
 		6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneForAll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -119,6 +122,7 @@
 		4F2E5DFA211040D4002C4101 /* OneForAll */ = {
 			isa = PBXGroup;
 			children = (
+				4F428C21211EAD34004F66B3 /* Components */,
 				4F2E5E3121104374002C4101 /* Features */,
 				4F2E5E3021104374002C4101 /* Constants */,
 				4F2E5E3221104374002C4101 /* Helpers */,
@@ -268,6 +272,15 @@
 			children = (
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		4F428C21211EAD34004F66B3 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				4F428C22211EADA9004F66B3 /* OFAStillCamera.h */,
+				4F428C23211EADA9004F66B3 /* OFAStillCamera.m */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		7A74E72794973EC026ED0365 /* Pods */ = {
@@ -487,6 +500,7 @@
 				4F428C17211D70C7004F66B3 /* OFAHomeViewController.m in Sources */,
 				4F2E5E0B211040D5002C4101 /* main.m in Sources */,
 				4F428C10211D6AFA004F66B3 /* PHAsset+extension.m in Sources */,
+				4F428C24211EADA9004F66B3 /* OFAStillCamera.m in Sources */,
 				4F2E5DFD211040D4002C4101 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
