@@ -10,22 +10,30 @@
 #import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_ENUM( NSInteger, OFACameraSetupResult ) {
+    OFACameraSetupResultSuccess,
+    OFACameraSetupResultNotAuthorized,
+    OFACameraSetupResultFailed
+};
+
 @protocol OFAStillCameraDelegate <NSObject>
 
 @optional
 
 - (void)captureDidFinishProcessingPhotoAsJPEGImage:(nullable UIImage *)photo error:(nullable NSError *)error;
-- (void)successFromAvatarEditAfterCamera;
 
 @end
 
 @interface OFAStillCamera : NSObject
 @property (nonatomic, weak) id<OFAStillCameraDelegate> delegate;
 @property (nonatomic, strong, readonly) AVCaptureSession* session;
+@property (nonatomic, assign) OFACameraSetupResult setupResult;
 
 - (void)startCamera;
 - (void)stopCamera;
 - (void)capturePhoto;
+- (void)configureSession;
 
 @end
 

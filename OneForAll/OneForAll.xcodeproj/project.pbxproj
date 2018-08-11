@@ -20,6 +20,7 @@
 		4F428C20211D7167004F66B3 /* OFAHomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F428C1E211D7167004F66B3 /* OFAHomeCell.xib */; };
 		4F428C24211EADA9004F66B3 /* OFAStillCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C23211EADA9004F66B3 /* OFAStillCamera.m */; };
 		4F428C27211EE672004F66B3 /* OFACameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C26211EE672004F66B3 /* OFACameraPreviewView.m */; };
+		4F428C2A211F0725004F66B3 /* OFAPhotoCaptureDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C29211F0725004F66B3 /* OFAPhotoCaptureDelegate.m */; };
 		FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,8 @@
 		4F428C23211EADA9004F66B3 /* OFAStillCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAStillCamera.m; sourceTree = "<group>"; };
 		4F428C25211EE672004F66B3 /* OFACameraPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFACameraPreviewView.h; sourceTree = "<group>"; };
 		4F428C26211EE672004F66B3 /* OFACameraPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFACameraPreviewView.m; sourceTree = "<group>"; };
+		4F428C28211F0725004F66B3 /* OFAPhotoCaptureDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAPhotoCaptureDelegate.h; sourceTree = "<group>"; };
+		4F428C29211F0725004F66B3 /* OFAPhotoCaptureDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAPhotoCaptureDelegate.m; sourceTree = "<group>"; };
 		6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneForAll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -284,6 +287,8 @@
 				4F428C23211EADA9004F66B3 /* OFAStillCamera.m */,
 				4F428C25211EE672004F66B3 /* OFACameraPreviewView.h */,
 				4F428C26211EE672004F66B3 /* OFACameraPreviewView.m */,
+				4F428C28211F0725004F66B3 /* OFAPhotoCaptureDelegate.h */,
+				4F428C29211F0725004F66B3 /* OFAPhotoCaptureDelegate.m */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -503,6 +508,7 @@
 				4F428C1F211D7167004F66B3 /* OFAHomeCell.m in Sources */,
 				4F428C0F211D6AFA004F66B3 /* UIColor+random.m in Sources */,
 				4F428C17211D70C7004F66B3 /* OFAHomeViewController.m in Sources */,
+				4F428C2A211F0725004F66B3 /* OFAPhotoCaptureDelegate.m in Sources */,
 				4F2E5E0B211040D5002C4101 /* main.m in Sources */,
 				4F428C10211D6AFA004F66B3 /* PHAsset+extension.m in Sources */,
 				4F428C27211EE672004F66B3 /* OFACameraPreviewView.m in Sources */,
