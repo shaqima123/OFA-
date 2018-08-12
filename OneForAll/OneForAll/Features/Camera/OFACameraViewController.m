@@ -16,6 +16,8 @@
 }
 @property (nonatomic, strong) OFAStillCamera *camera;
 @property (nonatomic, strong) OFACameraPreviewView *preview;
+@property (nonatomic, strong) UIButton *backBtn;
+
 @end
 
 @implementation OFACameraViewController
@@ -27,6 +29,13 @@
     [self.camera configureSession];
     //configure内部异步初始化session，这里马上setpreview的session会不会有问题
     self.preview.session = self.camera.session;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+    [tap addTarget:self action:@selector(tapToFocus:)];
+    [self.preview addGestureRecognizer:tap];
+    
+    [self initUI];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,8 +84,19 @@
     [self removeObservers];
 }
 
+#pragma mark private methods
+- (void)initUI {
+    [self backBtn];
+}
 
+- (void)actionBack {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
+- (void)tapToFocus:(UITapGestureRecognizer *)tap {
+    CGPoint devicePoint = [self.preview.videoPreviewLayer captureDevicePointOfInterestForPoint:[tap locationInView:tap.view]];
+    [self.camera focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:YES];
+}
 
 #pragma mark get - set
 - (OFACameraPreviewView *)preview {
@@ -90,6 +110,21 @@
     return _preview;
 }
 
+
+- (UIButton *)backBtn {
+    if (!_backBtn) {
+        _backBtn = [[UIButton alloc] init];
+        [_backBtn setBackgroundColor:[UIColor redColor]];
+        [_backBtn addTarget:self action:@selector(actionBack) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_backBtn];
+        [_backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(10 + Height_Top_Addtion);
+            make.left.equalTo(self.view).offset(10);
+            make.height.width.mas_equalTo(48.f);
+        }];
+    }
+    return  _backBtn;
+}
 
 - (void)addObservers
 {

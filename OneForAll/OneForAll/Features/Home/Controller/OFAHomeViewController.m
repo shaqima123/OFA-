@@ -18,7 +18,6 @@ UICollectionViewDataSource
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray * dataArray;
 
-
 @end
 
 @implementation OFAHomeViewController
@@ -59,6 +58,7 @@ UICollectionViewDataSource
     }
     return _collectionView;
 }
+
 
 #pragma mark ColletionViewDelegate
 
@@ -104,7 +104,8 @@ UICollectionViewDataSource
 {
     if (indexPath.row == 0) {
         OFACameraViewController *cameraViewController = [[OFACameraViewController alloc] init];
-        [self.navigationController pushViewController:cameraViewController animated:YES];
+        [self presentViewController:cameraViewController animated:NO completion:nil];
+//        [self.navigationController pushViewController:cameraViewController animated:YES];
     }
 }
 

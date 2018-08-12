@@ -29,6 +29,8 @@
 - (void)setSession:(AVCaptureSession *)session
 {
     self.videoPreviewLayer.session = session;
+    //设置预览view适配方式
+    self.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 }
 
 @end

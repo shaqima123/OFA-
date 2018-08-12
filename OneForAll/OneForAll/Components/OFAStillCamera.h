@@ -33,11 +33,12 @@ typedef NS_ENUM( NSInteger, OFACameraSetupResult ) {
 - (void)startCamera;
 - (void)stopCamera;
 - (void)capturePhoto;
+- (void)focusWithMode:(AVCaptureFocusMode)focusMode exposeWithMode:(AVCaptureExposureMode)exposureMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange;
+
 - (void)configureSession;
 
 - (void)addNotificationToCaptureSession;
 - (void)removeAllNotification;
-
 @end
 
 NS_ASSUME_NONNULL_END

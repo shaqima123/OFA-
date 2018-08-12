@@ -45,16 +45,16 @@
 #pragma mark Public Methods
 - (void)startCamera {
     dispatch_async( self.sessionQueue, ^{
-        if (!_session.isRunning) {
-            [_session startRunning];
+        if (!self->_session.isRunning) {
+            [self->_session startRunning];
         }
     });
 }
 
 - (void)stopCamera {
     dispatch_async( self.sessionQueue, ^{
-        if (_session.isRunning) {
-            [_session stopRunning];
+        if (self->_session.isRunning) {
+            [self->_session stopRunning];
         }
     });
 }
@@ -85,6 +85,35 @@
     }
 }
 
+
+- (void)focusWithMode:(AVCaptureFocusMode)focusMode exposeWithMode:(AVCaptureExposureMode)exposureMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange
+{
+    dispatch_async(self.sessionQueue, ^{
+        AVCaptureDevice *device = self->_videoInput.device;
+        NSError *error = nil;
+        if ( [device lockForConfiguration:&error] ) {
+            /*
+             Setting (focus/exposure)PointOfInterest alone does not initiate a (focus/exposure) operation.
+             Call set(Focus/Exposure)Mode() to apply the new point of interest.
+             */
+            if ( device.isFocusPointOfInterestSupported && [device isFocusModeSupported:focusMode] ) {
+                device.focusPointOfInterest = point;
+                device.focusMode = focusMode;
+            }
+            
+            if ( device.isExposurePointOfInterestSupported && [device isExposureModeSupported:exposureMode] ) {
+                device.exposurePointOfInterest = point;
+                device.exposureMode = exposureMode;
+            }
+            
+            device.subjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange;
+            [device unlockForConfiguration];
+        }
+        else {
+            NSLog( @"Could not lock device for configuration: %@", error );
+        }
+    } );
+}
 
 #pragma mark Setup
 - (void)setupSession {
