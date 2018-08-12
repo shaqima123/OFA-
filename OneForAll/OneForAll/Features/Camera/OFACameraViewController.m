@@ -17,6 +17,7 @@
 @property (nonatomic, strong) OFAStillCamera *camera;
 @property (nonatomic, strong) OFACameraPreviewView *preview;
 @property (nonatomic, strong) UIButton *backBtn;
+@property (nonatomic, strong) UIView *captureButton;
 
 @end
 
@@ -87,6 +88,7 @@
 #pragma mark private methods
 - (void)initUI {
     [self backBtn];
+    [self captureButton];
 }
 
 - (void)actionBack {
@@ -96,6 +98,10 @@
 - (void)tapToFocus:(UITapGestureRecognizer *)tap {
     CGPoint devicePoint = [self.preview.videoPreviewLayer captureDevicePointOfInterestForPoint:[tap locationInView:tap.view]];
     [self.camera focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:YES];
+}
+
+- (void)capturePhoto {
+    [self.camera capturePhoto];
 }
 
 #pragma mark get - set
@@ -126,6 +132,57 @@
     return  _backBtn;
 }
 
+- (UIView *)captureButton {
+    if (!_captureButton) {
+        _captureButton = [[UIView alloc] initWithFrame:CGRectZero];
+        [_captureButton setUserInteractionEnabled:YES];
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(capturePhoto)];
+        [_captureButton addGestureRecognizer:tap];
+    
+//        UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(actionPanInCaptureButton:)];
+//        pan.delegate = self;
+//        [_captureButton addGestureRecognizer:pan];
+        
+        //给按钮增加毛玻璃效果
+        UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+        UIVisualEffectView* effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+        effectView.userInteractionEnabled = NO;
+        [_captureButton addSubview:effectView];
+        
+        CAShapeLayer *circleLayer = [CAShapeLayer layer];
+        CAShapeLayer *maskLayer = [CAShapeLayer layer];
+        CGPoint center = CGPointMake(35.f, 35.f);
+        CGFloat currentRadius = 33.f;
+        UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:currentRadius startAngle:0 endAngle:M_PI * 2 clockwise:YES];
+        circleLayer.path = path.CGPath;
+        circleLayer.lineWidth = 6;
+        circleLayer.strokeColor = [UIColor whiteColor].CGColor;
+        circleLayer.fillColor = [UIColor clearColor].CGColor;
+        
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithArcCenter:center radius:currentRadius + 2 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
+        maskLayer.path = maskPath.CGPath;
+        
+        [_captureButton.layer addSublayer:circleLayer];
+        [_captureButton.layer setMask:maskLayer];
+        [self.view addSubview:_captureButton];
+        
+        [_captureButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.view);
+            make.bottom.equalTo(self.view).offset(IS_IPHONE_X ? -35 : -85);
+            make.height.width.mas_equalTo(70.f);
+        }];
+        
+        [effectView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self->_captureButton);
+            make.width.height.mas_equalTo(112.f);
+        }];
+        
+        //        [_captureButton bringSubviewToFront:_captureButton.imageView];
+    }
+    return _captureButton;
+}
+
+#pragma mark observers
 - (void)addObservers
 {
     [self.camera.session addObserver:self forKeyPath:@"running" options:NSKeyValueObservingOptionNew context:nil];
@@ -183,6 +240,5 @@
     NSLog( @"Capture session interruption ended" );
     shouldResumeCamera = NO;
 }
-
 
 @end

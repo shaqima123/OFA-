@@ -16,7 +16,6 @@
     AVCaptureDeviceDiscoverySession *_videoDeviceDiscoverySession;
     AVCaptureDeviceInput *_videoInput;
     AVCapturePhotoOutput *_photoOutput;
-    AVCapturePhotoSettings *_photoSettings;
 }
 
 @property (nonatomic) NSMutableDictionary<NSNumber *, OFAPhotoCaptureDelegate*> *inProgressPhotoCaptureDelegates;
@@ -60,29 +59,33 @@
 }
 
 - (void)capturePhoto {
-    if (_photoOutput && _photoSettings) {
-        _photoSettings.flashMode = AVCaptureFlashModeOff;
-        _photoSettings.highResolutionPhotoEnabled = YES;
-        if (_photoSettings.availablePreviewPhotoPixelFormatTypes.count > 0 ) {
-            _photoSettings.previewPhotoFormat = @{ (NSString *)kCVPixelBufferPixelFormatTypeKey : _photoSettings.availablePreviewPhotoPixelFormatTypes.firstObject };
-        }
-        if (@available(iOS 11.0, *)) {
-            if (_photoOutput.isDepthDataDeliverySupported ) {
-                _photoSettings.depthDataDeliveryEnabled = YES;
-            } else {
-                _photoSettings.depthDataDeliveryEnabled = NO;
+    dispatch_async( self.sessionQueue, ^{
+        if (self->_photoOutput) {
+            //AVCapturePhotoSetting不能重复使用
+            AVCapturePhotoSettings *photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey:AVVideoCodecJPEG}];
+            photoSettings.flashMode = AVCaptureFlashModeOff;
+            photoSettings.highResolutionPhotoEnabled = YES;
+            if (photoSettings.availablePreviewPhotoPixelFormatTypes.count > 0 ) {
+                photoSettings.previewPhotoFormat = @{ (NSString *)kCVPixelBufferPixelFormatTypeKey : photoSettings.availablePreviewPhotoPixelFormatTypes.firstObject };
             }
+            if (@available(iOS 11.0, *)) {
+                if (self->_photoOutput.isDepthDataDeliverySupported ) {
+                    photoSettings.depthDataDeliveryEnabled = YES;
+                } else {
+                    photoSettings.depthDataDeliveryEnabled = NO;
+                }
+            }
+            OFAPhotoCaptureDelegate *photoCaptureDelegate = [[OFAPhotoCaptureDelegate alloc] initWithRequestedPhotoSettings:photoSettings willCapturePhotoAnimation:^{
+                
+            } completionHandler:^(OFAPhotoCaptureDelegate * _Nonnull photoCaptureDelegate) {
+                dispatch_async( self.sessionQueue, ^{
+                    self.inProgressPhotoCaptureDelegates[@(photoCaptureDelegate.requestedPhotoSettings.uniqueID)] = nil;
+                } );
+            }];
+            self.inProgressPhotoCaptureDelegates[@(photoCaptureDelegate.requestedPhotoSettings.uniqueID)] = photoCaptureDelegate;
+            [self->_photoOutput capturePhotoWithSettings:photoSettings delegate:photoCaptureDelegate];
         }
-        OFAPhotoCaptureDelegate *photoCaptureDelegate = [[OFAPhotoCaptureDelegate alloc] initWithRequestedPhotoSettings:_photoSettings willCapturePhotoAnimation:^{
-      
-        } completionHandler:^(OFAPhotoCaptureDelegate * _Nonnull photoCaptureDelegate) {
-            dispatch_async( self.sessionQueue, ^{
-                self.inProgressPhotoCaptureDelegates[@(photoCaptureDelegate.requestedPhotoSettings.uniqueID)] = nil;
-            } );
-        }];
-        self.inProgressPhotoCaptureDelegates[@(photoCaptureDelegate.requestedPhotoSettings.uniqueID)] = photoCaptureDelegate;
-        [_photoOutput capturePhotoWithSettings:_photoSettings delegate:self];
-    }
+    });
 }
 
 
@@ -210,7 +213,6 @@
 - (BOOL)setupSessionOutPut {
     //AVCaptureStillImageOutput 在iOS10之后就被弃用了
      _photoOutput = [[AVCapturePhotoOutput alloc] init];
-     _photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey:AVVideoCodecJPEG}];
     if ([_session canAddOutput:_photoOutput]) {
         [_session addOutput:_photoOutput];
         _photoOutput.highResolutionCaptureEnabled = YES;

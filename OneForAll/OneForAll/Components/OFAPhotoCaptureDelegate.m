@@ -37,6 +37,16 @@
     self.willCapturePhotoAnimation();
 }
 
+- (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(NSError *)error {
+    //如果设置 depthDataDeliveryEnabled 为yes，必须实现该代理方法
+    if ( error != nil ) {
+        NSLog( @"Error capturing photo: %@", error );
+        return;
+    }
+    NSData *data = [photo fileDataRepresentation];
+    [self savePhotoData:data];
+}
+
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhotoSampleBuffer:(nullable CMSampleBufferRef)photoSampleBuffer previewPhotoSampleBuffer:(nullable CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(nonnull AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(nullable AVCaptureBracketedStillImageSettings *)bracketSettings error:(nullable NSError *)error {
     if (error) {
         NSLog(@"Take Photo Error occured.%@",error.description);
@@ -44,33 +54,37 @@
     }
     if (photoSampleBuffer) {
         NSData *data = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:photoSampleBuffer previewPhotoSampleBuffer:previewPhotoSampleBuffer];
-        UIImage *image = [UIImage imageWithData:data];
-        
-        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-            if (status == PHAuthorizationStatusAuthorized) {
-                [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-                    PHAssetChangeRequest *changeAssetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-                    
-                    PHAssetCollection *targetCollection = [[PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil]lastObject];
-                    
-                    PHAssetCollectionChangeRequest *changeCollectionRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:targetCollection];
-                    
-                    PHObjectPlaceholder *assetPlaceholder = [changeAssetRequest placeholderForCreatedAsset];
-                    
-                    [changeCollectionRequest addAssets:@[assetPlaceholder]];
-                    
-                } completionHandler:^(BOOL success, NSError * _Nullable error) {
-                    if (!success) {
-                        NSLog( @"Error occurred while saving photo to photo library: %@", error );
-                    }
-                    self.completionHandler(self);
-                }];
-            } else {
-                NSLog( @"Not authorized to save photo" );
-                self.completionHandler(self);
-            }
-        }];
+        [self savePhotoData:data];
     }
+}
+
+- (void)savePhotoData:(NSData *)data {
+    UIImage *image = [UIImage imageWithData:data];
+    
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        if (status == PHAuthorizationStatusAuthorized) {
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                PHAssetChangeRequest *changeAssetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+                
+                PHAssetCollection *targetCollection = [[PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil]lastObject];
+                
+                PHAssetCollectionChangeRequest *changeCollectionRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:targetCollection];
+                
+                PHObjectPlaceholder *assetPlaceholder = [changeAssetRequest placeholderForCreatedAsset];
+                
+                [changeCollectionRequest addAssets:@[assetPlaceholder]];
+                
+            } completionHandler:^(BOOL success, NSError * _Nullable error) {
+                if (!success) {
+                    NSLog( @"Error occurred while saving photo to photo library: %@", error );
+                }
+                self.completionHandler(self);
+            }];
+        } else {
+            NSLog( @"Not authorized to save photo" );
+            self.completionHandler(self);
+        }
+    }];
 }
 
 @end
