@@ -61,6 +61,16 @@
 - (void)capturePhoto {
     dispatch_async( self.sessionQueue, ^{
         if (self->_photoOutput) {
+            //如果是前置相机，拍照为镜像
+            AVCaptureDevice *currentVideoDevice = self ->_videoInput.device;
+            AVCaptureDevicePosition currentPosition = currentVideoDevice.position;
+            if (currentPosition == AVCaptureDevicePositionFront) {
+                AVCaptureConnection * connection = [self->_photoOutput connectionWithMediaType:AVMediaTypeVideo];
+                if ([connection isVideoMirroringSupported]) {
+                    [connection setVideoMirrored:YES];
+                }
+            }
+            
             //AVCapturePhotoSetting不能重复使用
             AVCapturePhotoSettings *photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey:AVVideoCodecJPEG}];
             photoSettings.flashMode = AVCaptureFlashModeOff;
@@ -88,6 +98,71 @@
     });
 }
 
+- (void)rotateCamera {
+    dispatch_async( self.sessionQueue, ^{
+        AVCaptureDevice *currentVideoDevice = self ->_videoInput.device;
+        AVCaptureDevicePosition currentPosition = currentVideoDevice.position;
+        
+        AVCaptureDevicePosition preferredPosition;
+        AVCaptureDeviceType preferredDeviceType;
+        
+        switch ( currentPosition )
+        {
+            case AVCaptureDevicePositionUnspecified:
+            case AVCaptureDevicePositionFront:
+                preferredPosition = AVCaptureDevicePositionBack;
+                if (@available(iOS 10.2, *)) {
+                    preferredDeviceType = AVCaptureDeviceTypeBuiltInDualCamera;
+                }
+                break;
+            case AVCaptureDevicePositionBack:
+                preferredPosition = AVCaptureDevicePositionFront;
+                preferredDeviceType = AVCaptureDeviceTypeBuiltInWideAngleCamera;
+                break;
+        }
+        
+        NSArray<AVCaptureDevice *> *devices = self ->_videoDeviceDiscoverySession.devices;
+        AVCaptureDevice *newVideoDevice = nil;
+        
+        for ( AVCaptureDevice *device in devices ) {
+            if ( device.position == preferredPosition && [device.deviceType isEqualToString:preferredDeviceType] ) {
+                newVideoDevice = device;
+                break;
+            }
+        }
+        
+        if ( ! newVideoDevice ) {
+            for ( AVCaptureDevice *device in devices ) {
+                if ( device.position == preferredPosition ) {
+                    newVideoDevice = device;
+                    break;
+                }
+            }
+        }
+        
+        if ( newVideoDevice ) {
+            AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:newVideoDevice error:NULL];
+            
+            [self.session beginConfiguration];
+            
+            // Remove the existing device input first, since using the front and back camera simultaneously is not supported.
+            [self.session removeInput:self->_videoInput];
+            
+            if ( [self.session canAddInput:videoDeviceInput] ) {
+                [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:currentVideoDevice];
+                
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:) name:AVCaptureDeviceSubjectAreaDidChangeNotification object:newVideoDevice];
+                
+                [self.session addInput:videoDeviceInput];
+                self-> _videoInput = videoDeviceInput;
+            }
+            else {
+                [self.session addInput:self ->_videoInput];
+            }
+            [self.session commitConfiguration];
+        }
+    } );
+}
 
 - (void)focusWithMode:(AVCaptureFocusMode)focusMode exposeWithMode:(AVCaptureExposureMode)exposureMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange
 {

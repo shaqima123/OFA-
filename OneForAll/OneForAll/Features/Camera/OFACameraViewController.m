@@ -17,6 +17,8 @@
 @property (nonatomic, strong) OFAStillCamera *camera;
 @property (nonatomic, strong) OFACameraPreviewView *preview;
 @property (nonatomic, strong) UIButton *backBtn;
+@property (nonatomic, strong) UIButton *rotateBtn;
+
 @property (nonatomic, strong) UIView *captureButton;
 
 @end
@@ -88,11 +90,16 @@
 #pragma mark private methods
 - (void)initUI {
     [self backBtn];
+    [self rotateBtn];
     [self captureButton];
 }
 
 - (void)actionBack {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)actionRotate {
+    [self.camera rotateCamera];
 }
 
 - (void)tapToFocus:(UITapGestureRecognizer *)tap {
@@ -129,7 +136,22 @@
             make.height.width.mas_equalTo(48.f);
         }];
     }
-    return  _backBtn;
+    return _backBtn;
+}
+
+- (UIButton *)rotateBtn {
+    if (!_rotateBtn) {
+        _rotateBtn = [[UIButton alloc] init];
+        [_rotateBtn setBackgroundColor:[UIColor blueColor]];
+        [_rotateBtn addTarget:self action:@selector(actionRotate) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_rotateBtn];
+        [_rotateBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(10 + Height_Top_Addtion);
+            make.right.equalTo(self.view).offset(-10);
+            make.height.width.mas_equalTo(48.f);
+        }];
+    }
+    return _rotateBtn;
 }
 
 - (UIView *)captureButton {
