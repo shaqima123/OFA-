@@ -7,8 +7,8 @@
 //
 
 #import "OFAHomeViewController.h"
-#import "OFAHomeCell.h"
 #import "OFACameraViewController.h"
+#import "OFAHomeCell.h"
 
 @interface OFAHomeViewController ()<
 UICollectionViewDelegate,

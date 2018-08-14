@@ -22,7 +22,6 @@ typedef NS_ENUM( NSInteger, OFACameraSetupResult ) {
 @optional
 
 - (void)captureDidFinishProcessingPhotoAsJPEGImage:(nullable UIImage *)photo error:(nullable NSError *)error;
-
 @end
 
 @interface OFAStillCamera : NSObject

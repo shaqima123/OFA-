@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithRequestedPhotoSettings:(AVCapturePhotoSettings *)requestedPhotoSettings willCapturePhotoAnimation:(void (^)(void))willCapturePhotoAnimation completionHandler:(void (^)(OFAPhotoCaptureDelegate *photoCaptureDelegate ))completionHandler;
 
 @property (nonatomic, readonly) AVCapturePhotoSettings *requestedPhotoSettings;
+@property (nonatomic, strong, readonly) UIImage *image;
 @end
 
 NS_ASSUME_NONNULL_END

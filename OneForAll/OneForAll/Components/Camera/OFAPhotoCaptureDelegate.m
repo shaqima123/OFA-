@@ -16,7 +16,7 @@
 @property (nonatomic, readwrite) AVCapturePhotoSettings *requestedPhotoSettings;
 @property (nonatomic) void (^willCapturePhotoAnimation)(void);
 @property (nonatomic) void (^completionHandler)(OFAPhotoCaptureDelegate *photoCaptureDelegate);
-
+@property (nonatomic, strong, readwrite) UIImage *image;
 @end
 
 @implementation OFAPhotoCaptureDelegate
@@ -60,7 +60,7 @@
 
 - (void)savePhotoData:(NSData *)data {
     UIImage *image = [UIImage imageWithData:data];
-    
+    self.image = image;
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         if (status == PHAuthorizationStatusAuthorized) {
             [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{

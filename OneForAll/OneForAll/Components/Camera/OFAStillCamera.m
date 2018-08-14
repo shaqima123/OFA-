@@ -91,6 +91,9 @@
                 dispatch_async( self.sessionQueue, ^{
                     self.inProgressPhotoCaptureDelegates[@(photoCaptureDelegate.requestedPhotoSettings.uniqueID)] = nil;
                 } );
+                if (self.delegate && [self.delegate respondsToSelector:@selector(captureDidFinishProcessingPhotoAsJPEGImage:error:)] ) {
+                    [self.delegate captureDidFinishProcessingPhotoAsJPEGImage:photoCaptureDelegate.image error:nil];
+                }
             }];
             self.inProgressPhotoCaptureDelegates[@(photoCaptureDelegate.requestedPhotoSettings.uniqueID)] = photoCaptureDelegate;
             [self->_photoOutput capturePhotoWithSettings:photoSettings delegate:photoCaptureDelegate];

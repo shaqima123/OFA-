@@ -18,8 +18,8 @@
 
 //weak - strong
 
-#define RSWeakObj(o) autoreleasepool{} __weak typeof(o) weak##o = o;
-#define RSStrongObj(o) autoreleasepool{} __strong typeof(o) o = weak##o;
+#define OFAWeakObj(o) autoreleasepool{} __weak typeof(o) weak##o = o;
+#define OFAStrongObj(o) autoreleasepool{} __strong typeof(o) o = weak##o;
 
 // 浮点值比较
 #define fequal(a,b) (fabs((a) - (b)) < FLT_EPSILON)

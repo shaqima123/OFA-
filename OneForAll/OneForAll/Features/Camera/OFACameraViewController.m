@@ -10,7 +10,10 @@
 #import "OFAStillCamera.h"
 #import "OFACameraPreviewView.h"
 
-@interface OFACameraViewController ()
+//View
+#import "OFAPhotoMiniView.h"
+
+@interface OFACameraViewController ()<OFAStillCameraDelegate>
 {
     BOOL shouldResumeCamera;
 }
@@ -20,7 +23,7 @@
 @property (nonatomic, strong) UIButton *rotateBtn;
 
 @property (nonatomic, strong) UIView *captureButton;
-
+@property (nonatomic, strong) OFAPhotoMiniView *miniView;
 @end
 
 @implementation OFACameraViewController
@@ -29,6 +32,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.camera = [[OFAStillCamera alloc] init];
+    self.camera.delegate = self;
     [self.camera configureSession];
     //configure内部异步初始化session，这里马上setpreview的session会不会有问题
     self.preview.session = self.camera.session;
@@ -112,6 +116,15 @@
 }
 
 #pragma mark get - set
+
+- (OFAPhotoMiniView *)miniView {
+    if (!_miniView) {
+        _miniView = [[OFAPhotoMiniView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 70, SCREEN_HEIGHT - 300, 60, 105)];
+        [self.view addSubview:_miniView];
+    }
+    return _miniView;
+}
+
 - (OFACameraPreviewView *)preview {
     if (!_preview) {
         _preview = [[OFACameraPreviewView alloc] initWithFrame:CGRectZero];
@@ -261,6 +274,14 @@
 {
     NSLog( @"Capture session interruption ended" );
     shouldResumeCamera = NO;
+}
+
+#pragma mard OFAStillCameraDelegate
+
+- (void)captureDidFinishProcessingPhotoAsJPEGImage:(nullable UIImage *)photo error:(nullable NSError *)error {
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.miniView updatePhoto:photo];
+    });
 }
 
 @end
