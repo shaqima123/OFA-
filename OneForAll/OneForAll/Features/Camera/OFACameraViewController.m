@@ -371,6 +371,15 @@ OFAPhotoMiniViewDelegate
     });
 }
 
+- (void)captureAnimation {
+    dispatch_async( dispatch_get_main_queue(), ^{
+        self.preview.videoPreviewLayer.opacity = 0.0;
+        [UIView animateWithDuration:0.2 animations:^{
+            self.preview.videoPreviewLayer.opacity = 1.0;
+        }];
+    } );
+}
+
 #pragma mark OFAPhotoMiniViewDelegate
 
 - (void)miniViewPanEnded {

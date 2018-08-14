@@ -86,7 +86,9 @@
                 }
             }
             OFAPhotoCaptureDelegate *photoCaptureDelegate = [[OFAPhotoCaptureDelegate alloc] initWithRequestedPhotoSettings:photoSettings willCapturePhotoAnimation:^{
-                
+                if (self.delegate && [self.delegate respondsToSelector:@selector(captureAnimation)]) {
+                    [self.delegate captureAnimation];
+                }
             } completionHandler:^(OFAPhotoCaptureDelegate * _Nonnull photoCaptureDelegate) {
                 dispatch_async( self.sessionQueue, ^{
                     self.inProgressPhotoCaptureDelegates[@(photoCaptureDelegate.requestedPhotoSettings.uniqueID)] = nil;
