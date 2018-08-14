@@ -27,6 +27,10 @@ OFAPhotoMiniViewDelegate
 
 @property (nonatomic, strong) UIView *captureButton;
 @property (nonatomic, strong) OFAPhotoMiniView *miniView;
+
+@property (strong, nonatomic)  CAShapeLayer *focuslayer1;
+@property (strong, nonatomic)  CAShapeLayer *focuslayer2;
+
 @end
 
 @implementation OFACameraViewController
@@ -110,13 +114,92 @@ OFAPhotoMiniViewDelegate
 }
 
 - (void)tapToFocus:(UITapGestureRecognizer *)tap {
+    CGPoint point = [tap locationInView:tap.view];
     CGPoint devicePoint = [self.preview.videoPreviewLayer captureDevicePointOfInterestForPoint:[tap locationInView:tap.view]];
     [self.camera focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:YES];
+    [self layerAnimationWithPoint:point];
+    UIImpactFeedbackGenerator *impactFeedBack = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+    [impactFeedBack prepare];
+    [impactFeedBack impactOccurred];
 }
 
 - (void)capturePhoto {
     [self.camera capturePhoto];
 }
+
+- (void)layerAnimationWithPoint:(CGPoint)point {
+    if (_focuslayer1) {
+        [_focuslayer1 removeFromSuperlayer];
+        _focuslayer1 = nil;
+    }
+    if (_focuslayer2) {
+        [_focuslayer2 removeFromSuperlayer];
+        _focuslayer2 = nil;
+    }
+    _focuslayer1 = [CAShapeLayer layer];
+    _focuslayer2 = [CAShapeLayer layer];
+    
+    _focuslayer1.position = point;
+    CGFloat width = 40.f;
+    _focuslayer1.bounds = CGRectMake(point.x - width/2, point.y - width/2, width, width);
+    UIBezierPath *path1 = [UIBezierPath bezierPathWithArcCenter:point radius:width/2 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
+    _focuslayer1.path = path1.CGPath;
+    _focuslayer1.lineWidth = 2;
+    _focuslayer1.strokeColor = [UIColor colorWithWhite:1 alpha:0.3].CGColor;
+    _focuslayer1.fillColor = [UIColor clearColor].CGColor;
+    [self.preview.layer addSublayer:_focuslayer1];
+    
+    _focuslayer2.position = point;
+    CGFloat width2 = 14.f;
+    _focuslayer2.bounds = CGRectMake(point.x - width/2, point.y - width/2, width, width);
+    UIBezierPath *path2 = [UIBezierPath bezierPathWithArcCenter:point radius:width2/2 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
+    _focuslayer2.path = path2.CGPath;
+    _focuslayer2.lineWidth = 2;
+    _focuslayer2.strokeColor = [UIColor whiteColor].CGColor;
+    _focuslayer2.fillColor = [UIColor clearColor].CGColor;
+    [self.preview.layer addSublayer:_focuslayer2];
+    
+    CABasicAnimation *anim = [CABasicAnimation animation];
+    anim.keyPath = @"opacity";
+    anim.toValue = @(0);
+    anim.autoreverses = YES;
+    anim.repeatCount = 2;
+    anim.removedOnCompletion = NO;
+    anim.fillMode = kCAFillModeForwards;
+    anim.delegate = self;
+    
+    CASpringAnimation* anim2 = [CASpringAnimation animationWithKeyPath:@"transform"];
+    NSMutableArray *values = [NSMutableArray array];
+    anim2.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.5f, 1.5f, 1.0f)];
+    anim2.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0f, 1.0f, 1.0f)];
+    anim2.mass = 1;
+    anim2.stiffness = 100;
+    anim2.damping = 10;
+    anim2.initialVelocity = 10;
+    anim2.duration = anim2.settlingDuration;
+    anim2.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    
+    [_focuslayer2 addAnimation:anim forKey:nil];
+    [_focuslayer1 addAnimation:anim2 forKey:nil];
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    if (flag) {
+        [self resetFocusLayerIfNeeded];
+    }
+}
+
+- (void)resetFocusLayerIfNeeded {
+    if (_focuslayer1) {
+        [_focuslayer1 removeFromSuperlayer];
+        _focuslayer1 = nil;
+    }
+    if (_focuslayer2) {
+        [_focuslayer2 removeFromSuperlayer];
+        _focuslayer2 = nil;
+    }
+}
+
 
 #pragma mark get - set
 
