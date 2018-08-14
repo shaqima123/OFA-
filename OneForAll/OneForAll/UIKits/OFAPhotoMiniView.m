@@ -10,7 +10,9 @@
 #import <Photos/Photos.h>
 
 @interface OFAPhotoMiniView()
-
+{
+    CGFloat originX;
+}
 @property (nonatomic, strong) UIImageView *photoImageView;
 
 @end
@@ -20,6 +22,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        originX = frame.origin.x;
         [self initUI];
     }
     return self;
@@ -40,6 +43,14 @@
     layer.strokeColor = [UIColor whiteColor].CGColor;
     layer.fillColor = [UIColor clearColor].CGColor;
     [self.layer addSublayer:layer];
+    
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] init];
+    [tap addTarget:self action:@selector(actionTap:)];
+    [self addGestureRecognizer:tap];
+    
+    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc] init];
+    [pan addTarget:self action:@selector(actionPan:)];
+    [self addGestureRecognizer:pan];
 }
 - (void)updatePhoto:(UIImage *)image {
     [self.photoImageView setImage:image];
@@ -69,4 +80,37 @@
     }
     return _photoImageView;
 }
+
+- (void)actionTap:(UITapGestureRecognizer *)tap {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(miniViewTapped)]) {
+        [self.delegate miniViewTapped];
+    }
+}
+
+- (void)actionPan:(UIPanGestureRecognizer *)pan {
+    if (pan.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [pan translationInView:self];
+        CGFloat absX = fabs(translation.x);
+        CGFloat absY = fabs(translation.y);
+        // 设置滑动有效距离
+        if (MAX(absX, absY) < 5)
+            return;
+        
+        if (absX > absY ) {
+            if (self.center.x + translation.x < originX) {
+                [self setCenter:CGPointMake(originX, self.center.y)];
+            } else {
+                [self setCenter:CGPointMake(self.center.x + translation.x, self.center.y)];
+            }
+        }
+    }
+    
+    if (pan.state == UIGestureRecognizerStateEnded) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(miniViewPanEnded)]) {
+            [self.delegate miniViewPanEnded];
+        }
+    }
+    [pan setTranslation:CGPointZero inView:self];
+}
+
 @end

@@ -13,7 +13,10 @@
 //View
 #import "OFAPhotoMiniView.h"
 
-@interface OFACameraViewController ()<OFAStillCameraDelegate>
+@interface OFACameraViewController ()<
+OFAStillCameraDelegate,
+OFAPhotoMiniViewDelegate
+>
 {
     BOOL shouldResumeCamera;
 }
@@ -120,6 +123,7 @@
 - (OFAPhotoMiniView *)miniView {
     if (!_miniView) {
         _miniView = [[OFAPhotoMiniView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 70, SCREEN_HEIGHT - 300, 60, 105)];
+        _miniView.delegate = self;
         [self.view addSubview:_miniView];
     }
     return _miniView;
@@ -276,12 +280,27 @@
     shouldResumeCamera = NO;
 }
 
-#pragma mard OFAStillCameraDelegate
+#pragma mark OFAStillCameraDelegate
 
 - (void)captureDidFinishProcessingPhotoAsJPEGImage:(nullable UIImage *)photo error:(nullable NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^(){
         [self.miniView updatePhoto:photo];
     });
+}
+
+#pragma mark OFAPhotoMiniViewDelegate
+
+- (void)miniViewPanEnded {
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.miniView setCenter:CGPointMake(SCREEN_WIDTH + self.miniView.bounds.size.width/2, self.miniView.center.y)];
+    } completion:^(BOOL finished) {
+        [self.miniView removeFromSuperview];
+        self.miniView = nil;
+    }];
+}
+
+- (void)miniViewTapped {
+    NSLog(@"MiniView Tapped");
 }
 
 @end
