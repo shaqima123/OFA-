@@ -26,7 +26,8 @@ OFAVideoCameraDelegate
 @property (nonatomic, strong) UIView *recordButton;
 
 @property (nonatomic, strong) CAShapeLayer *circleLayer;
-
+@property (nonatomic, strong) UIImageView *maskView;
+@property (nonatomic, strong) UIView *blackView;
 
 @end
 
@@ -91,6 +92,8 @@ OFAVideoCameraDelegate
 
 #pragma mark private methods
 - (void)initUI {
+    [self maskView];
+    [self blackView];
     [self backBtn];
     [self rotateBtn];
     [self recordButton];
@@ -202,6 +205,34 @@ OFAVideoCameraDelegate
     }
     return _recordButton;
 }
+
+- (UIImageView *)maskView {
+    if (!_maskView) {
+        _maskView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pickStarMask"]];
+        [self.view addSubview:_maskView];
+        [_maskView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(Height_Top_Addtion);
+            make.left.right.equalTo(self.view);
+            make.height.mas_equalTo(667.f);
+        }];
+    }
+    return _maskView;
+}
+
+- (UIView *)blackView {
+    if (!_blackView) {
+        _blackView = [[UIView alloc] initWithFrame:CGRectZero];
+        [_blackView setBackgroundColor:[UIColor blackColor]];
+        [self.view addSubview:_blackView];
+        [_blackView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.maskView.mas_bottom);
+            make.left.right.equalTo(self.view);
+            make.height.mas_equalTo(100.f);
+        }];
+    }
+    return _blackView;
+}
+
 
 #pragma mark observers
 - (void)addObservers
