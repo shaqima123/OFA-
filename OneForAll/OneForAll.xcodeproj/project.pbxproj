@@ -30,6 +30,7 @@
 		4F9FDE94212706430017B72C /* RSVideoWaterMarkCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE8D212706430017B72C /* RSVideoWaterMarkCommand.m */; };
 		4F9FDE95212706430017B72C /* RSVideoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE8E212706430017B72C /* RSVideoCommand.m */; };
 		4F9FDE96212706430017B72C /* RSVideoCropCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE8F212706430017B72C /* RSVideoCropCommand.m */; };
+		4F9FDE992127144B0017B72C /* RSVideoRotateCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE982127144B0017B72C /* RSVideoRotateCommand.m */; };
 		FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,8 @@
 		4F9FDE90212706430017B72C /* RSVideoCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVideoCommand.h; sourceTree = "<group>"; };
 		4F9FDE91212706430017B72C /* RSVideoCropCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVideoCropCommand.h; sourceTree = "<group>"; };
 		4F9FDE92212706430017B72C /* RSVideoWaterMarkCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVideoWaterMarkCommand.h; sourceTree = "<group>"; };
+		4F9FDE972127144B0017B72C /* RSVideoRotateCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVideoRotateCommand.h; sourceTree = "<group>"; };
+		4F9FDE982127144B0017B72C /* RSVideoRotateCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSVideoRotateCommand.m; sourceTree = "<group>"; };
 		6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneForAll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -356,6 +359,8 @@
 		4F9FDE8A212706220017B72C /* commands */ = {
 			isa = PBXGroup;
 			children = (
+				4F9FDE972127144B0017B72C /* RSVideoRotateCommand.h */,
+				4F9FDE982127144B0017B72C /* RSVideoRotateCommand.m */,
 				4F9FDE90212706430017B72C /* RSVideoCommand.h */,
 				4F9FDE8E212706430017B72C /* RSVideoCommand.m */,
 				4F9FDE91212706430017B72C /* RSVideoCropCommand.h */,
@@ -582,6 +587,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F428C1F211D7167004F66B3 /* OFAHomeCell.m in Sources */,
+				4F9FDE992127144B0017B72C /* RSVideoRotateCommand.m in Sources */,
 				4F428C0F211D6AFA004F66B3 /* UIColor+random.m in Sources */,
 				4F428C17211D70C7004F66B3 /* OFAHomeViewController.m in Sources */,
 				4F428C2A211F0725004F66B3 /* OFAPhotoCaptureDelegate.m in Sources */,

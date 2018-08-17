@@ -55,7 +55,8 @@
         // Create a new video composition
         self.mutableVideoComposition = [AVMutableVideoComposition videoComposition];
         
-        CGSize targetSize = CGSizeMake(assetVideoTrack.naturalSize.width, assetVideoTrack.naturalSize.width /9.f * 16.f);
+        CGSize targetSize = CGSizeMake(ceil(assetVideoTrack.naturalSize.width / 16) * 16,ceil(assetVideoTrack.naturalSize.width / 9.f) * 16);
+        
         self.mutableVideoComposition.renderSize = targetSize;
         self.mutableVideoComposition.frameDuration = CMTimeMake(1, 30);
         
@@ -71,7 +72,7 @@
 //        [layerInstruction setTransform:t1 atTime:kCMTimeZero];
         
     } else {
-        CGSize targetSize = CGSizeMake(self.mutableVideoComposition.renderSize.width, self.mutableVideoComposition.renderSize.width /9.f * 16.f);
+        CGSize targetSize = CGSizeMake(ceil(self.mutableVideoComposition.renderSize.width / 16) * 16, ceil(self.mutableVideoComposition.renderSize.width / 9.f) * 16);
         
         self.mutableVideoComposition.renderSize = targetSize;
         

@@ -9,6 +9,11 @@
 #import "OFALabPickStarViewController.h"
 #import "OFAVideoCamera.h"
 
+#import "RSVideoCropCommand.h"
+#import "RSVideoExportCommand.h"
+#import "RSVideoWaterMarkCommand.h"
+#import "RSVideoRotateCommand.h"
+
 @interface OFALabPickStarViewController ()
 <
 OFAVideoCameraDelegate
@@ -22,12 +27,19 @@ OFAVideoCameraDelegate
 @property (nonatomic, strong) OFACameraPreviewView *preview;
 @property (nonatomic, strong) UIButton *backBtn;
 @property (nonatomic, strong) UIButton *rotateBtn;
+@property (nonatomic, strong) UIButton *sendBtn;
 
 @property (nonatomic, strong) UIView *recordButton;
 
 @property (nonatomic, strong) CAShapeLayer *circleLayer;
 @property (nonatomic, strong) UIImageView *maskView;
 @property (nonatomic, strong) UIView *blackView;
+
+@property AVMutableComposition *composition;
+@property AVMutableVideoComposition *videoComposition;
+@property AVMutableAudioMix *audioMix;
+
+@property (nonatomic, strong) NSURL *videoURL;
 
 @end
 
@@ -97,6 +109,7 @@ OFAVideoCameraDelegate
     [self backBtn];
     [self rotateBtn];
     [self recordButton];
+    [self sendBtn];
 }
 
 - (void)actionBack {
@@ -117,6 +130,39 @@ OFAVideoCameraDelegate
     }
 }
 
+- (void)actionFinish {
+    if (self.videoURL) {
+        [self editVideo:self.videoURL mask:[UIImage imageNamed:@"pickStarMask"] complete:^(NSURL * url) {
+            NSLog(@"导出成功");
+        } fail:^(NSError * error) {
+            NSLog(@"导出失败");
+        }];
+    }
+}
+
+- (void)editVideo:(NSURL *)videoURL mask:(UIImage *)maskImage complete:(void (^)(NSURL*))completeHandler fail:(void (^)(NSError *)) failHandler {
+    AVAsset *asset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
+    
+    RSVideoRotateCommand *rotateCommand = [[RSVideoRotateCommand alloc] initWithComposition:self.composition videoComposition:self.videoComposition audioMix:self.audioMix];
+    [rotateCommand performWithAsset:asset withDegress:90];
+    self.composition = rotateCommand.mutableComposition;
+    self.videoComposition = rotateCommand.mutableVideoComposition;
+    self.audioMix = rotateCommand.mutableAudioMix;
+    
+    RSVideoExportCommand *exportCommand = [[RSVideoExportCommand alloc] initWithComposition:self.composition videoComposition:self.videoComposition audioMix:self.audioMix];
+    @OFAWeakObj(self);
+    [exportCommand performWithAsset:asset complete:^(NSURL *url) {
+        weakself.composition = nil;
+        weakself.videoComposition = nil;
+        weakself.audioMix = nil;
+        completeHandler(url);
+    } fail:^(NSError *error) {
+        weakself.composition = nil;
+        weakself.videoComposition = nil;
+        weakself.audioMix = nil;
+        failHandler(error);
+    }];
+}
 #pragma mark get - set
 
 - (OFACameraPreviewView *)preview {
@@ -160,6 +206,22 @@ OFAVideoCameraDelegate
     }
     return _rotateBtn;
 }
+
+- (UIButton *)sendBtn {
+    if (!_sendBtn) {
+        _sendBtn = [[UIButton alloc] init];
+        [_sendBtn setBackgroundColor:[UIColor greenColor]];
+        [_sendBtn addTarget:self action:@selector(actionFinish) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_sendBtn];
+        [_sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.recordButton);
+            make.right.equalTo(self.view).offset(-10);
+            make.height.width.mas_equalTo(48.f);
+        }];
+    }
+    return _sendBtn;
+}
+
 
 
 - (UIView *)recordButton {
@@ -301,6 +363,7 @@ OFAVideoCameraDelegate
 
 - (void)didFinishRecordingToOutputFileAtURL:(NSURL *)fileURL {
     isRecording = NO;
+    self.videoURL = fileURL;
 }
 
 @end

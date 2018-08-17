@@ -117,7 +117,7 @@
 
 - (void)writeVideoToPhotoLibrary:(NSURL *)url
 {
-    return;
+//    return;
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     
     [library writeVideoAtPathToSavedPhotosAlbum:url completionBlock:^(NSURL *assetURL, NSError *error){

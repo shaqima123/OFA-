@@ -81,8 +81,14 @@ AVCaptureFileOutputRecordingDelegate
             }
             
             
-            NSString *outputFileName = [NSUUID UUID].UUIDString;
+            NSString *outputFileName = @"pickStarMovie";
             NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[outputFileName stringByAppendingPathExtension:@"mov"]];
+            
+            //TODO:better
+//            if ( [[NSFileManager defaultManager] fileExistsAtPath:outputFilePath] ) {
+//                [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:NULL];
+//            }
+            
             [self-> _movieFileOutput startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
         }
     } );
@@ -328,10 +334,10 @@ AVCaptureFileOutputRecordingDelegate
     self.backgroundRecordingID = UIBackgroundTaskInvalid;
     
     dispatch_block_t cleanUp = ^{
-        if ( [[NSFileManager defaultManager] fileExistsAtPath:outputFileURL.path] ) {
-            [[NSFileManager defaultManager] removeItemAtPath:outputFileURL.path error:NULL];
-        }
-        
+//        if ( [[NSFileManager defaultManager] fileExistsAtPath:outputFileURL.path] ) {
+//            [[NSFileManager defaultManager] removeItemAtPath:outputFileURL.path error:NULL];
+//        }
+//
         if ( currentBackgroundRecordingID != UIBackgroundTaskInvalid ) {
             [[UIApplication sharedApplication] endBackgroundTask:currentBackgroundRecordingID];
         }
@@ -344,25 +350,25 @@ AVCaptureFileOutputRecordingDelegate
         success = [error.userInfo[AVErrorRecordingSuccessfullyFinishedKey] boolValue];
     }
     if ( success ) {
-        [PHPhotoLibrary requestAuthorization:^( PHAuthorizationStatus status ) {
-            if ( status == PHAuthorizationStatusAuthorized ) {
-                // Save the movie file to the photo library and cleanup.
-                [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-                    PHAssetResourceCreationOptions *options = [[PHAssetResourceCreationOptions alloc] init];
-                    options.shouldMoveFile = YES;
-                    PHAssetCreationRequest *creationRequest = [PHAssetCreationRequest creationRequestForAsset];
-                    [creationRequest addResourceWithType:PHAssetResourceTypeVideo fileURL:outputFileURL options:options];
-                } completionHandler:^( BOOL success, NSError *error ) {
-                    if ( ! success ) {
-                        NSLog( @"Movie Save Error: %@", error.description );
-                    }
-                    cleanUp();
-                }];
-            }
-            else {
-                cleanUp();
-            }
-        }];
+//        [PHPhotoLibrary requestAuthorization:^( PHAuthorizationStatus status ) {
+//            if ( status == PHAuthorizationStatusAuthorized ) {
+//                // Save the movie file to the photo library and cleanup.
+//                [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+//                    PHAssetResourceCreationOptions *options = [[PHAssetResourceCreationOptions alloc] init];
+//                    options.shouldMoveFile = YES;
+//                    PHAssetCreationRequest *creationRequest = [PHAssetCreationRequest creationRequestForAsset];
+//                    [creationRequest addResourceWithType:PHAssetResourceTypeVideo fileURL:outputFileURL options:options];
+//                } completionHandler:^( BOOL success, NSError *error ) {
+//                    if ( ! success ) {
+//                        NSLog( @"Movie Save Error: %@", error.description );
+//                    }
+//                    cleanUp();
+//                }];
+//            }
+//            else {
+//                cleanUp();
+//            }
+//        }];
     }
     else {
         cleanUp();
