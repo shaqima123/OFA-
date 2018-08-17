@@ -8,6 +8,8 @@
 
 #import "OFAHomeViewController.h"
 #import "OFACameraViewController.h"
+#import "OFALabPickStarViewController.h"
+
 #import "OFAHomeCell.h"
 
 @interface OFAHomeViewController ()<
@@ -106,6 +108,10 @@ UICollectionViewDataSource
         OFACameraViewController *cameraViewController = [[OFACameraViewController alloc] init];
         [self presentViewController:cameraViewController animated:NO completion:nil];
 //        [self.navigationController pushViewController:cameraViewController animated:YES];
+    }
+    if (indexPath.row == 1) {
+        OFALabPickStarViewController *pickStarViewController = [[OFALabPickStarViewController alloc] init];
+        [self presentViewController:pickStarViewController animated:YES completion:nil];
     }
 }
 
