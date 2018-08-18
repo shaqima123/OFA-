@@ -13,7 +13,7 @@
 #import "RSVideoExportCommand.h"
 #import "RSVideoWaterMarkCommand.h"
 #import "RSVideoRotateCommand.h"
-
+#import "RSVideoAddMusicCommand.h"
 @interface OFALabPickStarViewController ()
 <
 OFAVideoCameraDelegate
@@ -40,6 +40,10 @@ OFAVideoCameraDelegate
 @property AVMutableAudioMix *audioMix;
 
 @property (nonatomic, strong) NSURL *videoURL;
+@property (nonatomic, strong) NSMutableArray * pictureArray;
+
+//音乐播放
+@property (nonatomic, strong) AVAudioPlayer *player;
 
 @end
 
@@ -52,6 +56,7 @@ OFAVideoCameraDelegate
     [self.camera configureSession];
     self.preview.session = self.camera.session;
     [self initUI];
+    [self initData];
     // Do any additional setup after loading the view.
 }
 
@@ -112,6 +117,22 @@ OFAVideoCameraDelegate
     [self sendBtn];
 }
 
+- (void)initData {
+    self.pictureArray = @[@"1",@"2",@"3",@"4"].mutableCopy;
+    NSError *err;
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"pickStar" withExtension:@"mp3"];
+    _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&err];
+    _player.volume = 0.5;
+    //    设置代理
+    _player.delegate = self;
+    //    设置播放速率
+    _player.rate = 1.0;
+    //    设置播放次数 负数代表无限循环
+    _player.numberOfLoops = -1;
+    //    准备播放
+    [_player prepareToPlay];
+    
+}
 - (void)actionBack {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -149,6 +170,19 @@ OFAVideoCameraDelegate
     self.videoComposition = rotateCommand.mutableVideoComposition;
     self.audioMix = rotateCommand.mutableAudioMix;
     
+    
+    RSVideoAddMusicCommand *musicCommand = [[RSVideoAddMusicCommand alloc] initWithComposition:self.composition videoComposition:self.videoComposition audioMix:self.audioMix];
+    [musicCommand performWithAsset:asset];
+    self.composition = musicCommand.mutableComposition;
+    self.videoComposition = musicCommand.mutableVideoComposition;
+    self.audioMix = musicCommand.mutableAudioMix;
+    
+    RSVideoWaterMarkCommand *waterCommand = [[RSVideoWaterMarkCommand alloc] initWithComposition:self.composition videoComposition:self.videoComposition audioMix:self.audioMix];
+    [waterCommand performWithAsset:asset];
+    self.composition = waterCommand.mutableComposition;
+    self.videoComposition = waterCommand.mutableVideoComposition;
+    self.audioMix = waterCommand.mutableAudioMix;
+    
     RSVideoExportCommand *exportCommand = [[RSVideoExportCommand alloc] initWithComposition:self.composition videoComposition:self.videoComposition audioMix:self.audioMix];
     @OFAWeakObj(self);
     [exportCommand performWithAsset:asset complete:^(NSURL *url) {
@@ -163,6 +197,7 @@ OFAVideoCameraDelegate
         failHandler(error);
     }];
 }
+
 #pragma mark get - set
 
 - (OFACameraPreviewView *)preview {
@@ -359,11 +394,13 @@ OFAVideoCameraDelegate
 
 - (void)didStartRecordingToOutputFileAtURL:(NSURL *)fileURL {
     isRecording = YES;
+    [_player play];
 }
 
 - (void)didFinishRecordingToOutputFileAtURL:(NSURL *)fileURL {
     isRecording = NO;
     self.videoURL = fileURL;
+    [_player stop];
 }
 
 @end

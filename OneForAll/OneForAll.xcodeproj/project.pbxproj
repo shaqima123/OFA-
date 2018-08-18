@@ -25,12 +25,20 @@
 		4F428C3D2121CB63004F66B3 /* OFAPhotoMiniView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F428C3C2121CB63004F66B3 /* OFAPhotoMiniView.m */; };
 		4F9FDE832126C10B0017B72C /* OFAVideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE822126C10B0017B72C /* OFAVideoCamera.m */; };
 		4F9FDE862126CC460017B72C /* OFALabPickStarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE852126CC460017B72C /* OFALabPickStarViewController.m */; };
-		4F9FDE89212701230017B72C /* pickStarMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDE88212701230017B72C /* pickStarMask.png */; };
 		4F9FDE93212706430017B72C /* RSVideoExportCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE8C212706430017B72C /* RSVideoExportCommand.m */; };
 		4F9FDE94212706430017B72C /* RSVideoWaterMarkCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE8D212706430017B72C /* RSVideoWaterMarkCommand.m */; };
 		4F9FDE95212706430017B72C /* RSVideoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE8E212706430017B72C /* RSVideoCommand.m */; };
 		4F9FDE96212706430017B72C /* RSVideoCropCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE8F212706430017B72C /* RSVideoCropCommand.m */; };
 		4F9FDE992127144B0017B72C /* RSVideoRotateCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDE982127144B0017B72C /* RSVideoRotateCommand.m */; };
+		4F9FDE9F212728FF0017B72C /* 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDE9A212728FF0017B72C /* 5.png */; };
+		4F9FDEA0212728FF0017B72C /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDE9B212728FF0017B72C /* 4.png */; };
+		4F9FDEA1212728FF0017B72C /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDE9C212728FF0017B72C /* 3.png */; };
+		4F9FDEA2212728FF0017B72C /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDE9D212728FF0017B72C /* 1.png */; };
+		4F9FDEA3212728FF0017B72C /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDE9E212728FF0017B72C /* 2.png */; };
+		4F9FDEAE21273ADA0017B72C /* pickStarMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDEAD21273ADA0017B72C /* pickStarMask.png */; };
+		4F9FDEB02127B98C0017B72C /* pickStar.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDEAF2127B98B0017B72C /* pickStar.mp3 */; };
+		4F9FDEB32127C6DC0017B72C /* RSVideoAddMusicCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDEB22127C6DC0017B72C /* RSVideoAddMusicCommand.m */; };
+		4F9FDEB52127CFA50017B72C /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDEB42127CFA50017B72C /* 6.jpg */; };
 		FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */; };
 /* End PBXBuildFile section */
 
@@ -92,7 +100,6 @@
 		4F9FDE822126C10B0017B72C /* OFAVideoCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAVideoCamera.m; sourceTree = "<group>"; };
 		4F9FDE842126CC460017B72C /* OFALabPickStarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFALabPickStarViewController.h; sourceTree = "<group>"; };
 		4F9FDE852126CC460017B72C /* OFALabPickStarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFALabPickStarViewController.m; sourceTree = "<group>"; };
-		4F9FDE88212701230017B72C /* pickStarMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickStarMask.png; sourceTree = "<group>"; };
 		4F9FDE8B212706430017B72C /* RSVideoExportCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVideoExportCommand.h; sourceTree = "<group>"; };
 		4F9FDE8C212706430017B72C /* RSVideoExportCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSVideoExportCommand.m; sourceTree = "<group>"; };
 		4F9FDE8D212706430017B72C /* RSVideoWaterMarkCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSVideoWaterMarkCommand.m; sourceTree = "<group>"; };
@@ -103,6 +110,16 @@
 		4F9FDE92212706430017B72C /* RSVideoWaterMarkCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVideoWaterMarkCommand.h; sourceTree = "<group>"; };
 		4F9FDE972127144B0017B72C /* RSVideoRotateCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVideoRotateCommand.h; sourceTree = "<group>"; };
 		4F9FDE982127144B0017B72C /* RSVideoRotateCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSVideoRotateCommand.m; sourceTree = "<group>"; };
+		4F9FDE9A212728FF0017B72C /* 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5.png; sourceTree = "<group>"; };
+		4F9FDE9B212728FF0017B72C /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
+		4F9FDE9C212728FF0017B72C /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
+		4F9FDE9D212728FF0017B72C /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		4F9FDE9E212728FF0017B72C /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		4F9FDEAD21273ADA0017B72C /* pickStarMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickStarMask.png; sourceTree = "<group>"; };
+		4F9FDEAF2127B98B0017B72C /* pickStar.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickStar.mp3; sourceTree = "<group>"; };
+		4F9FDEB12127C6DC0017B72C /* RSVideoAddMusicCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSVideoAddMusicCommand.h; sourceTree = "<group>"; };
+		4F9FDEB22127C6DC0017B72C /* RSVideoAddMusicCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSVideoAddMusicCommand.m; sourceTree = "<group>"; };
+		4F9FDEB42127CFA50017B72C /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
 		6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneForAll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -351,7 +368,14 @@
 		4F9FDE87212700F00017B72C /* resource */ = {
 			isa = PBXGroup;
 			children = (
-				4F9FDE88212701230017B72C /* pickStarMask.png */,
+				4F9FDEAF2127B98B0017B72C /* pickStar.mp3 */,
+				4F9FDE9D212728FF0017B72C /* 1.png */,
+				4F9FDE9E212728FF0017B72C /* 2.png */,
+				4F9FDEB42127CFA50017B72C /* 6.jpg */,
+				4F9FDE9C212728FF0017B72C /* 3.png */,
+				4F9FDE9B212728FF0017B72C /* 4.png */,
+				4F9FDE9A212728FF0017B72C /* 5.png */,
+				4F9FDEAD21273ADA0017B72C /* pickStarMask.png */,
 			);
 			path = resource;
 			sourceTree = "<group>";
@@ -369,6 +393,8 @@
 				4F9FDE8C212706430017B72C /* RSVideoExportCommand.m */,
 				4F9FDE92212706430017B72C /* RSVideoWaterMarkCommand.h */,
 				4F9FDE8D212706430017B72C /* RSVideoWaterMarkCommand.m */,
+				4F9FDEB12127C6DC0017B72C /* RSVideoAddMusicCommand.h */,
+				4F9FDEB22127C6DC0017B72C /* RSVideoAddMusicCommand.m */,
 			);
 			path = commands;
 			sourceTree = "<group>";
@@ -496,9 +522,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F9FDE89212701230017B72C /* pickStarMask.png in Resources */,
+				4F9FDEB52127CFA50017B72C /* 6.jpg in Resources */,
+				4F9FDEA0212728FF0017B72C /* 4.png in Resources */,
+				4F9FDEA2212728FF0017B72C /* 1.png in Resources */,
+				4F9FDE9F212728FF0017B72C /* 5.png in Resources */,
 				4F2E5E08211040D5002C4101 /* LaunchScreen.storyboard in Resources */,
+				4F9FDEAE21273ADA0017B72C /* pickStarMask.png in Resources */,
 				4F2E5E05211040D5002C4101 /* Assets.xcassets in Resources */,
+				4F9FDEA3212728FF0017B72C /* 2.png in Resources */,
+				4F9FDEB02127B98C0017B72C /* pickStar.mp3 in Resources */,
+				4F9FDEA1212728FF0017B72C /* 3.png in Resources */,
 				4F428C20211D7167004F66B3 /* OFAHomeCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,6 +625,7 @@
 				4F428C17211D70C7004F66B3 /* OFAHomeViewController.m in Sources */,
 				4F428C2A211F0725004F66B3 /* OFAPhotoCaptureDelegate.m in Sources */,
 				4F9FDE93212706430017B72C /* RSVideoExportCommand.m in Sources */,
+				4F9FDEB32127C6DC0017B72C /* RSVideoAddMusicCommand.m in Sources */,
 				4F9FDE94212706430017B72C /* RSVideoWaterMarkCommand.m in Sources */,
 				4F9FDE95212706430017B72C /* RSVideoCommand.m in Sources */,
 				4F428C3D2121CB63004F66B3 /* OFAPhotoMiniView.m in Sources */,

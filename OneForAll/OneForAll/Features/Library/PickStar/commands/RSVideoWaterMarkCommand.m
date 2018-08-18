@@ -13,7 +13,8 @@
 #import <SDWebImage/UIImage+MultiFormat.h>
 #import <SDWebImage/SDWebImageFrame.h>
 
-@interface RSVideoWaterMarkCommand ()
+@interface RSVideoWaterMarkCommand ()<CALayerDelegate>
+
 
 @end
 
@@ -78,79 +79,223 @@
             
         }
         
-//        if (self.elementArray && self.elementArray.count > 0) {
-//            CALayer *parentLayer = [CALayer layer];
-//            CALayer *videoLayer = [CALayer layer];
-//            parentLayer.frame = CGRectMake(0, 0, self.mutableVideoComposition.renderSize.width, self.mutableVideoComposition.renderSize.height);
-//            videoLayer.frame = CGRectMake(0, 0, self.mutableVideoComposition.renderSize.width, self.mutableVideoComposition.renderSize.height);
-//
-//            [parentLayer addSublayer:videoLayer];
-////            if (self.watermarkLayer) {
-////                self.watermarkLayer.frame = parentLayer.frame;
-////                [parentLayer addSublayer:self.watermarkLayer];
-////            }
-//            self.coordinateRatio = parentLayer.frame.size.width / SCREEN_WIDTH;
-//            for (RSEditElementModel *elementModel in self.elementArray) {
-//                if ([elementModel isMemberOfClass:[RSWordElementModel class]]) {
-//                    RSWordElementModel *wordModel =(RSWordElementModel *)elementModel;
-//                    UIImage *wordImage = wordModel.wordImage;
-//                    CALayer *wordLayer = [CALayer layer];
-//                    wordLayer.center = CGPointMake(wordModel.position.x * self.coordinateRatio, parentLayer.frame.size.height - wordModel.position.y * self.coordinateRatio);//矫正位置
-//                    wordLayer.bounds = CGRectMake(0, 0, wordImage.size.width / wordModel.wordRatio * self.coordinateRatio , wordImage.size.height / wordModel.wordRatio * self.coordinateRatio);
-//                    wordLayer.contents = (id)wordImage.CGImage;
-//                    CGFloat trans = CGAffineTransformGetRotation(wordModel.transform);
-//                    wordModel.transform  = CGAffineTransformRotate(wordModel.transform, -trans * 2);//矫正旋转
-//                    [wordLayer setAffineTransform:wordModel.transform];
-//                    [parentLayer addSublayer:wordLayer];
-//                }
-//
-//                if ([elementModel isMemberOfClass:[RSStickModel class]]) {
-//                    RSStickModel *stickModel = (RSStickModel *)elementModel;
-//
-//                    UIImage *webpImage = stickModel.stickImage;
-//
-//                    CALayer *stickLayer = [CALayer layer];
-//                    stickLayer.center = CGPointMake(stickModel.position.x * self.coordinateRatio, parentLayer.frame.size.height - stickModel.position.y * self.coordinateRatio);//矫正位置
-//                    stickLayer.bounds = CGRectMake(0, 0, webpImage.size.width * self.coordinateRatio , webpImage.size.height * self.coordinateRatio);
-//                    CGFloat trans = CGAffineTransformGetRotation(stickModel.transform);
-//                    CGFloat a = stickModel.transform.a;
-//                    CGFloat d = stickModel.transform.d;
-//
-//                    if ((a > 0 && d > 0) || (a < 0 && d < 0) ) {
-//                        stickModel.transform  = CGAffineTransformRotate(stickModel.transform, -trans * 2);//矫正旋转
-//                    }
-//                    if ((a > 0 && d < 0) || (a < 0 && d > 0) ) {
-//                        stickModel.transform  = CGAffineTransformRotate(stickModel.transform, trans * 2);//矫正旋转
-//                    }
-//                    stickModel.transform = CGAffineTransformScale(stickModel.transform, stickModel.originalScale, stickModel.originalScale);//矫正缩放
-//                    [stickLayer setAffineTransform:stickModel.transform];
-//
-//                    if (webpImage.sd_frames && webpImage.sd_frames.count > 0) {
-//                        CAKeyframeAnimation * animation = [self animationForWebPImage:webpImage];
-//                        [stickLayer addAnimation:animation forKey:@"contents"];
-//                    } else {
-//                        stickLayer.contents = (id)webpImage.CGImage;
-//                    }
-//                    [parentLayer addSublayer:stickLayer];
-//                }
-//
-//                if ([elementModel isKindOfClass:[RSCardElementModel class]]) {
-//                    RSCardElementModel *cardModel = (RSCardElementModel *)elementModel;
-//                    UIImage *image = cardModel.produceImg;
-//
-//                    CALayer *cardLayer = [CALayer layer];
-//                    cardLayer.center = CGPointMake(cardModel.position.x * _coordinateRatio, parentLayer.height - cardModel.position.y * _coordinateRatio);
-//                    cardLayer.bounds = CGRectMake(0, 0, image.size.width * _coordinateRatio, image.size.height * _coordinateRatio);
-//                    CGFloat rotation = CGAffineTransformGetRotation(cardModel.transform);
-//                    cardModel.transform  = CGAffineTransformRotate(cardModel.transform, -rotation * 2);//矫正旋转
-//                    cardLayer.affineTransform = cardModel.transform;
-//                    cardLayer.contents =(id)image.CGImage;
-//                    [parentLayer addSublayer:cardLayer];
-//                }
-//
-//            }
-//            self.mutableVideoComposition.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
-//        }
+        CALayer *parentLayer = [CALayer layer];
+        CALayer *videoLayer = [CALayer layer];
+        parentLayer.frame = CGRectMake(0, 0, self.mutableVideoComposition.renderSize.width, self.mutableVideoComposition.renderSize.height);
+        videoLayer.frame = CGRectMake(0, 0, self.mutableVideoComposition.renderSize.width, self.mutableVideoComposition.renderSize.height);
+        [parentLayer addSublayer:videoLayer];
+        
+        NSString *imagePath = [NSString stringWithFormat:@"%@/%@",[[NSBundle mainBundle] resourcePath],@"pickStarMask.png"];
+        [self watermarkWithImage:[UIImage imageWithContentsOfFile:imagePath]];
+        if (self.watermarkLayer) {
+            self.watermarkLayer.frame = parentLayer.frame;
+            [parentLayer addSublayer:self.watermarkLayer];
+        }
+        
+        self.coordinateRatio = parentLayer.frame.size.width / SCREEN_WIDTH;
+
+        CATextLayer *nameLayer = [CATextLayer layer];
+        nameLayer.string = @"Kira";
+        nameLayer.fontSize = 44.f;
+        nameLayer.foregroundColor = [[UIColor whiteColor] CGColor];
+        nameLayer.alignmentMode = kCAAlignmentRight;
+        nameLayer.frame = CGRectMake(510, 1000, 300, 132);
+        [parentLayer addSublayer:nameLayer];
+        
+        CATextLayer *wordLayer = [CATextLayer layer];
+        wordLayer.string = @"可爱的园子，你想要我都给你～";
+        wordLayer.fontSize = 44.f;
+        wordLayer.foregroundColor = [[UIColor blackColor] CGColor];
+        wordLayer.alignmentMode = kCAAlignmentLeft;
+        wordLayer.frame = CGRectMake(65 * self.coordinateRatio, 228 * self.coordinateRatio, SCREEN_WIDTH * self.coordinateRatio, 132);
+        [parentLayer addSublayer:wordLayer];
+        
+        CFTimeInterval timeline = 0;
+        
+        NSMutableArray <CALayer *> *layerArr = @[].mutableCopy;
+        for (int i = 1; i < 5; i++) {
+            CALayer *layer0 = [self layerWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d",i]]];
+            CALayer *layer1 = [self layerWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d",i]]];
+            layer0.opacity = 0;
+            layer1.opacity = 0;
+            [layerArr addObject:layer0];
+            [layerArr addObject:layer1];
+            [parentLayer addSublayer:layer0];
+            [parentLayer addSublayer:layer1];
+        }
+        
+        for (int i = 1; i < 5; i++) {
+            CALayer *layer0 = [self layerWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d",i]]];
+            CALayer *layer1 = [self layerWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d",i]]];
+            if (i == 4) {
+                layer1 = [self layerWithImage:[UIImage imageNamed:@"6.jpg"]];
+            }
+            layer0.opacity = 0;
+            layer1.opacity = 0;
+            [layerArr addObject:layer0];
+            [layerArr addObject:layer1];
+            [parentLayer addSublayer:layer0];
+            [parentLayer addSublayer:layer1];
+        }
+        
+        CALayer * layer = nil;
+        CAAnimation *ani;
+        
+        timeline = 1;
+        
+        layer = [layerArr objectAtIndex:0];
+        layer.frame = CGRectMake(150 * self.coordinateRatio, 500 * self.coordinateRatio , 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"100"];
+        timeline += 0.1;
+        ani = [self starPickAnimation:timeline];
+        [layer addAnimation:ani forKey:@"101"];
+        timeline += 1;
+ 
+        layer = [layerArr objectAtIndex:1];
+        layer.frame = CGRectMake(80 * self.coordinateRatio , 100 * self.coordinateRatio, 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"110"];
+        timeline += 0.1;
+        ani = [self starSendAnimation:timeline];
+        [layer addAnimation:ani forKey:@"111"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:2];
+        layer.frame = CGRectMake(150 * self.coordinateRatio, 500 * self.coordinateRatio , 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"200"];
+        timeline += 0.1;
+        ani = [self starPickAnimation:timeline];
+        [layer addAnimation:ani forKey:@"201"];
+        timeline += 0.5;
+        
+        layer = [layerArr objectAtIndex:3];
+        layer.frame = CGRectMake(80 * self.coordinateRatio , 100 * self.coordinateRatio, 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"210"];
+        timeline += 0.1;
+        ani = [self starSendAnimation:timeline];
+        [layer addAnimation:ani forKey:@"211"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:4];
+        layer.frame = CGRectMake(150 * self.coordinateRatio, 500 * self.coordinateRatio , 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"300"];
+        timeline += 0.1;
+        ani = [self starPickAnimation:timeline];
+        [layer addAnimation:ani forKey:@"301"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:5];
+        layer.frame = CGRectMake(80 * self.coordinateRatio , 100 * self.coordinateRatio, 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"310"];
+        timeline += 0.1;
+        ani = [self starSendAnimation:timeline];
+        [layer addAnimation:ani forKey:@"311"];
+        timeline += 0.5;
+        
+        layer = [layerArr objectAtIndex:6];
+        layer.frame = CGRectMake(150 * self.coordinateRatio, 500 * self.coordinateRatio , 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"400"];
+        timeline += 0.1;
+        ani = [self starPickAnimation:timeline];
+        [layer addAnimation:ani forKey:@"401"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:7];
+        layer.frame = CGRectMake(80 * self.coordinateRatio , 100 * self.coordinateRatio, 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"410"];
+        timeline += 0.1;
+        ani = [self starSendAnimation:timeline];
+        [layer addAnimation:ani forKey:@"411"];
+        timeline += 1;
+    
+        //第二遍
+        layer = [layerArr objectAtIndex:8];
+        layer.frame = CGRectMake(150 * self.coordinateRatio, 500 * self.coordinateRatio , 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"500"];
+        timeline += 0.1;
+        ani = [self starPickAnimation:timeline];
+        [layer addAnimation:ani forKey:@"501"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:9];
+        layer.frame = CGRectMake(80 * self.coordinateRatio , 100 * self.coordinateRatio, 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"510"];
+        timeline += 0.1;
+        ani = [self starSendAnimation:timeline];
+        [layer addAnimation:ani forKey:@"511"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:10];
+        layer.frame = CGRectMake(150 * self.coordinateRatio, 500 * self.coordinateRatio , 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"600"];
+        timeline += 0.1;
+        ani = [self starPickAnimation:timeline];
+        [layer addAnimation:ani forKey:@"601"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:11];
+        layer.frame = CGRectMake(80 * self.coordinateRatio , 100 * self.coordinateRatio, 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"610"];
+        timeline += 0.1;
+        ani = [self starSendAnimation:timeline];
+        [layer addAnimation:ani forKey:@"611"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:12];
+        layer.frame = CGRectMake(150 * self.coordinateRatio, 500 * self.coordinateRatio , 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"700"];
+        timeline += 0.1;
+        ani = [self starPickAnimation:timeline];
+        [layer addAnimation:ani forKey:@"701"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:13];
+        layer.frame = CGRectMake(80 * self.coordinateRatio , 100 * self.coordinateRatio, 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"710"];
+        timeline += 0.1;
+        ani = [self starSendAnimation:timeline];
+        [layer addAnimation:ani forKey:@"711"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:14];
+        layer.frame = CGRectMake(150 * self.coordinateRatio, 500 * self.coordinateRatio , 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"800"];
+        timeline += 0.1;
+        ani = [self starPickAnimation:timeline];
+        [layer addAnimation:ani forKey:@"801"];
+        timeline += 1;
+        
+        layer = [layerArr objectAtIndex:15];
+        layer.frame = CGRectMake(80 * self.coordinateRatio , 100 * self.coordinateRatio, 300, 300);
+        ani = [self appearAnimation:timeline];
+        [layer addAnimation:ani forKey:@"810"];
+        timeline += 0.1;
+        ani = [self starSendAnimation:timeline];
+        [layer addAnimation:ani forKey:@"811"];
+        timeline += 1;
+
+        self.mutableVideoComposition.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
+
+//        AVMutableVideoCompositionInstruction* instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+        
+//        instruction.timeRange = CMTimeRangeMake(kCMTimeZero, assetAudioTrack.asset.duration);
+//        AVMutableVideoCompositionLayerInstruction* layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:assetVideoTrack];
+//        instruction.layerInstructions = [NSArray arrayWithObjects:layerInstruction, nil];
+//        self.mutableVideoComposition.instructions = [NSArray arrayWithObject: instruction];
     }
 }
 
@@ -159,7 +304,7 @@
     // Create a layer for the title
     if (image) {
         CALayer *_watermarkLayer = [CALayer layer];
-        _watermarkLayer.bounds = CGRectMake(0, 0, self.mutableVideoComposition.renderSize.width, self.mutableVideoComposition.renderSize.height);
+        _watermarkLayer.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
         
         _watermarkLayer.contents = (id)image.CGImage;
         
@@ -167,107 +312,74 @@
     }
 }
 
+- (CALayer *)layerWithImage:(UIImage *)image
+{
+    // Create a layer for the title
+    if (image) {
+        CALayer *_watermarkLayer = [CALayer layer];
+        _watermarkLayer.bounds = CGRectMake(0, 0, image.size.width * image.scale, image.size.height * image.scale);
+        
+        _watermarkLayer.contents = (id)image.CGImage;
+        return _watermarkLayer;
+    }
+    return nil;
+}
 
-//- (CAKeyframeAnimation *)animationForWebPImage:(UIImage *)stickImage {
-//    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"contents"];
-//    NSMutableArray *frames = [NSMutableArray new];
-//    NSMutableArray *delayTimes = [NSMutableArray new];
-//    CGFloat totalTimes = 0.0;
-//
-//    NSMutableArray *sd_frames = @[].mutableCopy;
-//    if (stickImage.sd_frames) {
-//        sd_frames = stickImage.sd_frames;
-//    }
-//    for (int i = 0; i < sd_frames.count; i++) {
-//        SDWebImageFrame *frame = [sd_frames objectAtIndex:i];
-//        UIImage *image = frame.image;
-//        [frames addObject:(__bridge id)image.CGImage];
-//        NSTimeInterval time = frame.duration;
-//        [delayTimes addObject:[NSNumber numberWithDouble:time]];
-//        totalTimes = totalTimes + time;
-//    }
-//    NSMutableArray *times = @[].mutableCopy;
-//    CGFloat currentTime = 0;
-//    NSInteger count = delayTimes.count;
-//
-//    for (int i = 0; i < count; ++i) {
-//        [times addObject:[NSNumber numberWithFloat:(currentTime / totalTimes)]];
-//        currentTime += [[delayTimes objectAtIndex:i] floatValue];
-//    }
-//    animation.keyTimes = times;
-//    animation.values = frames;
-//    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-//    animation.duration = totalTimes;
-//    animation.repeatCount = HUGE_VALF;
-//    animation.beginTime = AVCoreAnimationBeginTimeAtZero;
-//    animation.removedOnCompletion = NO;
-//
-//    return animation;
-//}
-
-- (CAKeyframeAnimation *)animationForGifWithURL:(NSURL *)url {
-    
-    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"contents"];
-    
-    NSMutableArray * frames = [NSMutableArray new];
-    NSMutableArray *delayTimes = [NSMutableArray new];
-    
-    CGFloat totalTime = 0.0;
-    CGFloat gifWidth;
-    CGFloat gifHeight;
-    
-    CGImageSourceRef gifSource = CGImageSourceCreateWithURL((CFURLRef)url, NULL);
-    
-    // get frame count
-    size_t frameCount = CGImageSourceGetCount(gifSource);
-    for (size_t i = 0; i < frameCount; ++i) {
-        // get each frame
-        CGImageRef frame = CGImageSourceCreateImageAtIndex(gifSource, i, NULL);
-        [frames addObject:(__bridge id)frame];
-        CGImageRelease(frame);
-        
-        // get gif info with each frame
-//        CFDictionaryRef
-        NSDictionary *dict = (NSDictionary*)CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(gifSource, i, NULL));
-        NSLog(@"kCGImagePropertyGIFDictionary %@", [dict valueForKey:(NSString*)kCGImagePropertyGIFDictionary]);
-        
-        // get gif size
-        gifWidth = [[dict valueForKey:(NSString*)kCGImagePropertyPixelWidth] floatValue];
-        gifHeight = [[dict valueForKey:(NSString*)kCGImagePropertyPixelHeight] floatValue];
-        
-        // kCGImagePropertyGIFDictionary中kCGImagePropertyGIFDelayTime，kCGImagePropertyGIFUnclampedDelayTime值是一样的
-        NSDictionary *gifDict = [dict valueForKey:(NSString*)kCGImagePropertyGIFDictionary];
-        [delayTimes addObject:[gifDict valueForKey:(NSString*)kCGImagePropertyGIFDelayTime]];
-        
-        totalTime = totalTime + [[gifDict valueForKey:(NSString*)kCGImagePropertyGIFDelayTime] floatValue];
-    }
-    
-    if (gifSource) {
-        CFRelease(gifSource);
-    }
-    
-    NSMutableArray *times = [NSMutableArray arrayWithCapacity:3];
-    CGFloat currentTime = 0;
-    NSInteger count = delayTimes.count;
-    for (int i = 0; i < count; ++i) {
-        [times addObject:[NSNumber numberWithFloat:(currentTime / totalTime)]];
-        currentTime += [[delayTimes objectAtIndex:i] floatValue];
-    }
-    
-    NSMutableArray *images = [NSMutableArray arrayWithCapacity:3];
-    for (int i = 0; i < count; ++i) {
-        [images addObject:[frames objectAtIndex:i]];
-    }
-    
-    animation.keyTimes = times;
-    animation.values = images;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    animation.duration = totalTime;
-    animation.repeatCount = HUGE_VALF;
-    animation.beginTime = AVCoreAnimationBeginTimeAtZero;
+- (CABasicAnimation *)appearAnimation:(CFTimeInterval)startTime {
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    animation.duration = 0.1;
+    animation.repeatCount = 1;
+    animation.fromValue = [NSNumber numberWithFloat:0];
+    animation.toValue = [NSNumber numberWithFloat:1];
+    animation.beginTime = startTime;
     animation.removedOnCompletion = NO;
-    
+    animation.fillMode = kCAFillModeForwards;
     return animation;
+}
+
+- (CAAnimationGroup *)starSendAnimation:(CFTimeInterval)startTime {
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+
+    animation.fromValue = [NSNumber numberWithFloat:1.0];
+    animation.toValue = [NSNumber numberWithFloat:2.0];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+
+    CABasicAnimation *animation2 = [CABasicAnimation animationWithKeyPath:@"opacity"];
+
+    animation2.fromValue = [NSNumber numberWithFloat:1.0];
+    animation2.toValue = [NSNumber numberWithFloat:0];
+    CAAnimationGroup *group = [CAAnimationGroup animation];
+    
+    // 动画选项设定
+    group.duration = 1.0;
+    group.repeatCount = 1;
+    group.beginTime = startTime;
+    // 添加动画
+    group.animations = [NSArray arrayWithObjects:animation, animation2, nil];
+    group.removedOnCompletion = NO;
+    group.fillMode = kCAFillModeForwards;
+    return group;
+}
+
+- (CABasicAnimation *)starPickAnimation:(CFTimeInterval)startTime {
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    animation.duration = 0.2f;
+    animation.repeatCount = 1;
+    animation.fromValue = [NSNumber numberWithFloat:1.0];
+    animation.toValue = [NSNumber numberWithFloat:0];
+    animation.beginTime = startTime;
+    animation.removedOnCompletion = NO;
+    animation.fillMode = kCAFillModeForwards;
+    return animation;
+}
+
+-(void)animationDidStart:(CAAnimation *)anim{
+    
+}
+
+#pragma mark 动画结束
+-(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
+   
 }
 
 @end
