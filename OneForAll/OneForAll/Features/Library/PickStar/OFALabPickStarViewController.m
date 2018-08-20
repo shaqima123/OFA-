@@ -154,9 +154,13 @@ OFAVideoCameraDelegate
 - (void)actionFinish {
     if (self.videoURL) {
         [self editVideo:self.videoURL mask:[UIImage imageNamed:@"pickStarMask"] complete:^(NSURL * url) {
-            [self showAlert:NSLocalizedString(@"导出视频成功", nil)];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showAlert:NSLocalizedString(@"导出视频成功", nil)];
+            });
         } fail:^(NSError * error) {
-            [self showAlert:NSLocalizedString(@"导出视频失败", nil)];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showAlert:NSLocalizedString(@"导出视频失败", nil)];
+            });
         }];
     }
 }
@@ -165,7 +169,7 @@ OFAVideoCameraDelegate
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:string message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"点击了取消");
+        
     }];
     
     [actionSheet addAction:action];
