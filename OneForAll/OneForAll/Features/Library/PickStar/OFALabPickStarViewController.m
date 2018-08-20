@@ -154,11 +154,23 @@ OFAVideoCameraDelegate
 - (void)actionFinish {
     if (self.videoURL) {
         [self editVideo:self.videoURL mask:[UIImage imageNamed:@"pickStarMask"] complete:^(NSURL * url) {
-            NSLog(@"导出成功");
+            [self showAlert:NSLocalizedString(@"导出视频成功", nil)];
         } fail:^(NSError * error) {
-            NSLog(@"导出失败");
+            [self showAlert:NSLocalizedString(@"导出视频失败", nil)];
         }];
     }
+}
+
+- (void)showAlert:(NSString *)string {
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:string message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"点击了取消");
+    }];
+    
+    [actionSheet addAction:action];
+    
+    [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
 - (void)editVideo:(NSURL *)videoURL mask:(UIImage *)maskImage complete:(void (^)(NSURL*))completeHandler fail:(void (^)(NSError *)) failHandler {
@@ -215,7 +227,7 @@ OFAVideoCameraDelegate
 - (UIButton *)backBtn {
     if (!_backBtn) {
         _backBtn = [[UIButton alloc] init];
-        [_backBtn setBackgroundColor:[UIColor redColor]];
+        [_backBtn setImage:[UIImage imageNamed:@"btn_camera_quite"] forState:UIControlStateNormal];
         [_backBtn addTarget:self action:@selector(actionBack) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_backBtn];
         [_backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -230,7 +242,7 @@ OFAVideoCameraDelegate
 - (UIButton *)rotateBtn {
     if (!_rotateBtn) {
         _rotateBtn = [[UIButton alloc] init];
-        [_rotateBtn setBackgroundColor:[UIColor blueColor]];
+        [_rotateBtn setImage:[UIImage imageNamed:@"btn_camera_switch"] forState:UIControlStateNormal];
         [_rotateBtn addTarget:self action:@selector(actionRotate) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_rotateBtn];
         [_rotateBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -245,7 +257,7 @@ OFAVideoCameraDelegate
 - (UIButton *)sendBtn {
     if (!_sendBtn) {
         _sendBtn = [[UIButton alloc] init];
-        [_sendBtn setBackgroundColor:[UIColor greenColor]];
+        [_sendBtn setImage:[UIImage imageNamed:@"btn_camera_done"] forState:UIControlStateNormal];
         [_sendBtn addTarget:self action:@selector(actionFinish) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_sendBtn];
         [_sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {

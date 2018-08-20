@@ -227,7 +227,7 @@ OFAPhotoMiniViewDelegate
 - (UIButton *)backBtn {
     if (!_backBtn) {
         _backBtn = [[UIButton alloc] init];
-        [_backBtn setBackgroundColor:[UIColor redColor]];
+        [_backBtn setImage:[UIImage imageNamed:@"btn_camera_quite"] forState:UIControlStateNormal];
         [_backBtn addTarget:self action:@selector(actionBack) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_backBtn];
         [_backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -242,7 +242,7 @@ OFAPhotoMiniViewDelegate
 - (UIButton *)rotateBtn {
     if (!_rotateBtn) {
         _rotateBtn = [[UIButton alloc] init];
-        [_rotateBtn setBackgroundColor:[UIColor blueColor]];
+        [_rotateBtn setImage:[UIImage imageNamed:@"btn_camera_switch"] forState:UIControlStateNormal];
         [_rotateBtn addTarget:self action:@selector(actionRotate) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_rotateBtn];
         [_rotateBtn mas_makeConstraints:^(MASConstraintMaker *make) {
