@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0FB0442155EDCA00EBD96C /* OFACameraChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB0432155EDCA00EBD96C /* OFACameraChooseViewController.m */; };
+		4F0FB0472155EDDE00EBD96C /* OFALabChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB0462155EDDE00EBD96C /* OFALabChooseViewController.m */; };
 		4F2E5DFD211040D4002C4101 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2E5DFC211040D4002C4101 /* AppDelegate.m */; };
 		4F2E5E05211040D5002C4101 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F2E5E04211040D5002C4101 /* Assets.xcassets */; };
 		4F2E5E08211040D5002C4101 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F2E5E06211040D5002C4101 /* LaunchScreen.storyboard */; };
@@ -62,6 +64,11 @@
 /* Begin PBXFileReference section */
 		01816869B8893B14C7414C20 /* Pods-OneForAll.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneForAll.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneForAll/Pods-OneForAll.release.xcconfig"; sourceTree = "<group>"; };
 		11E9396B5B0008C4F52FA507 /* Pods-OneForAll.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneForAll.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneForAll/Pods-OneForAll.debug.xcconfig"; sourceTree = "<group>"; };
+		4F0FB0422155EDCA00EBD96C /* OFACameraChooseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFACameraChooseViewController.h; sourceTree = "<group>"; };
+		4F0FB0432155EDCA00EBD96C /* OFACameraChooseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFACameraChooseViewController.m; sourceTree = "<group>"; };
+		4F0FB0452155EDDE00EBD96C /* OFALabChooseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFALabChooseViewController.h; sourceTree = "<group>"; };
+		4F0FB0462155EDDE00EBD96C /* OFALabChooseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFALabChooseViewController.m; sourceTree = "<group>"; };
+		4F0FB0482155EE4000EBD96C /* OFAConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAConstants.h; sourceTree = "<group>"; };
 		4F2E5DF8211040D4002C4101 /* OneForAll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneForAll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F2E5DFB211040D4002C4101 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4F2E5DFC211040D4002C4101 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -239,6 +246,7 @@
 			children = (
 				4F428C04211D682D004F66B3 /* OneForAll.pch */,
 				4F428C11211D6CC5004F66B3 /* OFAMacro.h */,
+				4F0FB0482155EE4000EBD96C /* OFAConstants.h */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -310,6 +318,10 @@
 			children = (
 				4F428C13211D70C7004F66B3 /* OFAHomeViewController.h */,
 				4F428C14211D70C7004F66B3 /* OFAHomeViewController.m */,
+				4F0FB0422155EDCA00EBD96C /* OFACameraChooseViewController.h */,
+				4F0FB0432155EDCA00EBD96C /* OFACameraChooseViewController.m */,
+				4F0FB0452155EDDE00EBD96C /* OFALabChooseViewController.h */,
+				4F0FB0462155EDDE00EBD96C /* OFALabChooseViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -630,12 +642,14 @@
 				4F9FDE95212706430017B72C /* RSVideoCommand.m in Sources */,
 				4F428C3D2121CB63004F66B3 /* OFAPhotoMiniView.m in Sources */,
 				4F2E5E0B211040D5002C4101 /* main.m in Sources */,
+				4F0FB0472155EDDE00EBD96C /* OFALabChooseViewController.m in Sources */,
 				4F428C10211D6AFA004F66B3 /* PHAsset+extension.m in Sources */,
 				4F428C27211EE672004F66B3 /* OFACameraPreviewView.m in Sources */,
 				4F9FDE96212706430017B72C /* RSVideoCropCommand.m in Sources */,
 				4F9FDE862126CC460017B72C /* OFALabPickStarViewController.m in Sources */,
 				4F428C24211EADA9004F66B3 /* OFAStillCamera.m in Sources */,
 				4F9FDE832126C10B0017B72C /* OFAVideoCamera.m in Sources */,
+				4F0FB0442155EDCA00EBD96C /* OFACameraChooseViewController.m in Sources */,
 				4F428C2D211F1C23004F66B3 /* OFACameraViewController.m in Sources */,
 				4F2E5DFD211040D4002C4101 /* AppDelegate.m in Sources */,
 			);
