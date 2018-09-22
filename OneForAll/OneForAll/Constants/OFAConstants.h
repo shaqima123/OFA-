@@ -14,3 +14,4 @@
 
 static NSString * kOFAHomeCell = @"OFAHomeCell";
 
+static NSString * kOFACameraChooseCell = @"OFACameraChooseCell";

@@ -7,8 +7,9 @@
 //
 
 #import "OFAHomeViewController.h"
-#import "OFACameraViewController.h"
 #import "OFALabPickStarViewController.h"
+#import "OFACameraChooseViewController.h"
+#import "OFALabChooseViewController.h"
 
 #import "OFAHomeCell.h"
 
@@ -104,9 +105,8 @@ UICollectionViewDataSource
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        OFACameraViewController *cameraViewController = [[OFACameraViewController alloc] init];
-        [self presentViewController:cameraViewController animated:NO completion:nil];
-//        [self.navigationController pushViewController:cameraViewController animated:YES];
+        OFACameraChooseViewController * cameraChooseController = [[OFACameraChooseViewController alloc] init];
+        [self.navigationController pushViewController:cameraChooseController animated:YES];
     }
     if (indexPath.row == 1) {
         OFALabPickStarViewController *pickStarViewController = [[OFALabPickStarViewController alloc] init];
