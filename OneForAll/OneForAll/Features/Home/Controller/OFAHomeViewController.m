@@ -52,7 +52,7 @@ UICollectionViewDataSource
         _collectionView.dataSource = self;
         _collectionView.alwaysBounceVertical = YES;
         
-        [_collectionView registerNib:[UINib nibWithNibName:@"OFAHomeCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"OFAHomeCell"];
+        [_collectionView registerNib:[UINib nibWithNibName:@"OFAHomeCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:kOFAHomeCell];
         [self.view addSubview:_collectionView];
         [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
@@ -76,8 +76,7 @@ UICollectionViewDataSource
 
 -(OFAHomeCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * CellIdentifier = @"OFAHomeCell";
-    OFAHomeCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    OFAHomeCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kOFAHomeCell forIndexPath:indexPath];
     if (indexPath.row == 0) {
         cell.iconImage.image = [UIImage imageNamed:@"btn_home_camera"];
         cell.bgImageView.image = [UIImage imageNamed:@"img_home_camera"];
