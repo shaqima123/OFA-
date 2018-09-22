@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4F0FB0442155EDCA00EBD96C /* OFACameraChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB0432155EDCA00EBD96C /* OFACameraChooseViewController.m */; };
 		4F0FB0472155EDDE00EBD96C /* OFALabChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB0462155EDDE00EBD96C /* OFALabChooseViewController.m */; };
+		4F0FB04B2156229800EBD96C /* UIColor+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB04A2156229800EBD96C /* UIColor+Helper.m */; };
 		4F2E5DFD211040D4002C4101 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2E5DFC211040D4002C4101 /* AppDelegate.m */; };
 		4F2E5E05211040D5002C4101 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F2E5E04211040D5002C4101 /* Assets.xcassets */; };
 		4F2E5E08211040D5002C4101 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F2E5E06211040D5002C4101 /* LaunchScreen.storyboard */; };
@@ -69,6 +70,8 @@
 		4F0FB0452155EDDE00EBD96C /* OFALabChooseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFALabChooseViewController.h; sourceTree = "<group>"; };
 		4F0FB0462155EDDE00EBD96C /* OFALabChooseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFALabChooseViewController.m; sourceTree = "<group>"; };
 		4F0FB0482155EE4000EBD96C /* OFAConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAConstants.h; sourceTree = "<group>"; };
+		4F0FB0492156229800EBD96C /* UIColor+Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+Helper.h"; sourceTree = "<group>"; };
+		4F0FB04A2156229800EBD96C /* UIColor+Helper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Helper.m"; sourceTree = "<group>"; };
 		4F2E5DF8211040D4002C4101 /* OneForAll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneForAll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F2E5DFB211040D4002C4101 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4F2E5DFC211040D4002C4101 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -275,6 +278,8 @@
 				4F428C0C211D6AFA004F66B3 /* PHAsset+extension.m */,
 				4F428C0B211D6AFA004F66B3 /* UIColor+random.h */,
 				4F428C07211D6AF9004F66B3 /* UIColor+random.m */,
+				4F0FB0492156229800EBD96C /* UIColor+Helper.h */,
+				4F0FB04A2156229800EBD96C /* UIColor+Helper.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -646,6 +651,7 @@
 				4F428C10211D6AFA004F66B3 /* PHAsset+extension.m in Sources */,
 				4F428C27211EE672004F66B3 /* OFACameraPreviewView.m in Sources */,
 				4F9FDE96212706430017B72C /* RSVideoCropCommand.m in Sources */,
+				4F0FB04B2156229800EBD96C /* UIColor+Helper.m in Sources */,
 				4F9FDE862126CC460017B72C /* OFALabPickStarViewController.m in Sources */,
 				4F428C24211EADA9004F66B3 /* OFAStillCamera.m in Sources */,
 				4F9FDE832126C10B0017B72C /* OFAVideoCamera.m in Sources */,

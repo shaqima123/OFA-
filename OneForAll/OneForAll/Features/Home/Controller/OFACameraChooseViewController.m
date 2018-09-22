@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray * dataArray;
+@property (nonatomic, strong) NSArray * imageArray;
 
 @end
 
@@ -30,7 +31,7 @@
 
 - (void)initData {
     self.dataArray = @[@[@"拍照"],@[@"摄像"]];
-    
+    self.imageArray = @[@[@"btn_home_camera"],@[@"btn_home_video"]];
 }
 
 - (void)initUI {
@@ -43,7 +44,7 @@
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-        _tableView.backgroundColor = RGBAHEX(0x000000, 1);
+        _tableView.backgroundColor = [UIColor DARK];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.alwaysBounceVertical = YES;
@@ -62,6 +63,10 @@
     return self.dataArray.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 88.f;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSArray * arr = [self.dataArray objectAtIndex:section];
     return arr.count;
@@ -72,8 +77,15 @@
     if(!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kOFACameraChooseCell];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.backgroundColor = [UIColor GRAY08];
+    [cell.textLabel setTextColor:[UIColor whiteColor]];
+    [cell.textLabel setFont:[UIFont boldSystemFontOfSize:30]];
     cell.textLabel.text = self.dataArray[indexPath.section][indexPath.row];
-    
+    NSString * imageName = (NSString *)self.imageArray[indexPath.section][indexPath.row];
+    [cell.imageView setBounds:CGRectMake(0, 0, 44, 44)];
+    cell.imageView.image = [UIImage imageNamed:imageName];
     return cell;
 }
 

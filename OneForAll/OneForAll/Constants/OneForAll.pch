@@ -19,5 +19,6 @@
 #import "UIColor+random.h"
 #import "OFAMacro.h"
 #import "OFAConstants.h"
+#import "UIColor+Helper.h"
 
 #endif /* OneForAll_pch */
