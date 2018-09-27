@@ -8,6 +8,8 @@
 
 #import "OFAVideoCameraViewController.h"
 #import "OFAVideoCamera.h"
+#import "RSVideoExportCommand.h"
+
 
 @interface OFAVideoCameraViewController ()
 <
@@ -133,11 +135,25 @@ OFAVideoCameraDelegate
     }
 }
 
+- (void)showAlert:(NSString *)string {
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:string message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheet addAction:action];
+    
+    [self presentViewController:actionSheet animated:YES completion:nil];
+}
+
 #pragma mark get - set
 
 - (OFACameraPreviewView *)preview {
     if (!_preview) {
         _preview = [[OFACameraPreviewView alloc] initWithFrame:CGRectZero];
+        _preview.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+
         [self.view addSubview:_preview];
         [_preview mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
@@ -290,6 +306,15 @@ OFAVideoCameraDelegate
 - (void)didFinishRecordingToOutputFileAtURL:(NSURL *)fileURL {
     isRecording = NO;
     self.videoURL = fileURL;
+    AVAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
+    RSVideoExportCommand *exportCommand = [[RSVideoExportCommand alloc] initWithComposition:nil videoComposition:nil audioMix:nil];
+    @OFAWeakObj(self);
+    [exportCommand performWithAsset:asset complete:^(NSURL *url) {
+        [weakself showAlert:@"保存视频到相册啦"];
+    } fail:^(NSError *error) {
+        [weakself showAlert:@"保存视频失败了"];
+    }];
+    
 }
 
 @end
