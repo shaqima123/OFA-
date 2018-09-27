@@ -8,7 +8,7 @@
 
 #import "OFACameraChooseViewController.h"
 #import "OFACameraViewController.h"
-
+#import "OFAVideoCameraViewController.h"
 
 @interface OFACameraChooseViewController ()<
     UITableViewDelegate,
@@ -96,9 +96,10 @@
             [self presentViewController:cameraViewController animated:NO completion:nil];
         }
     }
-    if (indexPath.row == 1) {
+    if (indexPath.section == 1) {
         if (indexPath.row == 0) {
-            
+            OFAVideoCameraViewController *videoCameraViewController = [[OFAVideoCameraViewController alloc] init];
+            [self presentViewController:videoCameraViewController animated:NO completion:nil];
         }
     }
 }
