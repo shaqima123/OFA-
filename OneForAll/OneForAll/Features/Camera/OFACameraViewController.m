@@ -52,7 +52,7 @@ OFAPhotoMiniViewDelegate
     self.glView = [[GLKView alloc] initWithFrame:self.view.bounds context:self.glContext];
     self.glView.bounds = CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height);
     self.glView.layer.position = CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height * 0.5);
-    self.glView.layer.affineTransform = CGAffineTransformMakeRotation(M_PI * 0.5);
+//    self.glView.layer.affineTransform = CGAffineTransformMakeRotation(M_PI * 0.5);
     
     [self.view addSubview:self.glView];
     
@@ -374,10 +374,8 @@ OFAPhotoMiniViewDelegate
         [hudAdjust setValue:result forKey:@"inputImage"];
         [hudAdjust setValue:[NSNumber numberWithFloat:8.094] forKey: @"inputAngle"];
         result = hudAdjust.outputImage;
-        
-        CGRect cropRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(self.glView.drawableWidth, self.glView.drawableHeight), result.extent);
-        result = [result imageByCroppingToRect:cropRect];
-        result = [result imageByApplyingTransform:CGAffineTransformMakeTranslation(0, -result.extent.origin.y)];
+
+        CGRect cropRect = AVMakeRectWithAspectRatioInsideRect(result.extent.size, CGRectMake(0, 0, self.glView.drawableWidth, self.glView.drawableHeight));
         
         if (self.glContext != EAGLContext.currentContext) {
             glFlush();
@@ -389,8 +387,7 @@ OFAPhotoMiniViewDelegate
         
         glEnable(0x0BE2);
         glBlendFunc(1, 0x0303);
-        
-        [self.ciContext drawImage:result inRect:CGRectMake(0, 0, self.glView.drawableWidth, self.glView.drawableHeight) fromRect:result.extent];
+        [self.ciContext drawImage:result inRect:cropRect fromRect:result.extent];
         [self.glView display];
     }
 }
