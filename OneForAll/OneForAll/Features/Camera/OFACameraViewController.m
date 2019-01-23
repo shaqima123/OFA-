@@ -8,7 +8,8 @@
 
 #import "OFACameraViewController.h"
 #import "OFAStillCamera.h"
-#import "OFACameraPreviewView.h"
+#import <GLKit/GLKView.h>
+#import <OpenGLES/ES2/gl.h>
 
 //View
 #import "OFAPhotoMiniView.h"
@@ -21,7 +22,11 @@ OFAPhotoMiniViewDelegate
     BOOL shouldResumeCamera;
 }
 @property (nonatomic, strong) OFAStillCamera *camera;
-@property (nonatomic, strong) OFACameraPreviewView *preview;
+
+@property (nonatomic, strong) CIContext *ciContext;
+@property (nonatomic, strong) EAGLContext *glContext;
+@property (nonatomic, strong) GLKView *glView;
+
 @property (nonatomic, strong) UIButton *backBtn;
 @property (nonatomic, strong) UIButton *rotateBtn;
 
@@ -41,12 +46,19 @@ OFAPhotoMiniViewDelegate
     self.camera = [[OFAStillCamera alloc] init];
     self.camera.delegate = self;
     [self.camera configureSession];
-    //configure内部异步初始化session，这里马上setpreview的session会不会有问题
-    self.preview.session = self.camera.session;
+    self.glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    self.ciContext = [CIContext contextWithEAGLContext:self.glContext];
+    
+    self.glView = [[GLKView alloc] initWithFrame:self.view.bounds context:self.glContext];
+    self.glView.bounds = CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height);
+    self.glView.layer.position = CGPointMake(self.view.frame.size.width * 0.5, self.view.frame.size.height * 0.5);
+    self.glView.layer.affineTransform = CGAffineTransformMakeRotation(M_PI * 0.5);
+    
+    [self.view addSubview:self.glView];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
     [tap addTarget:self action:@selector(tapToFocus:)];
-    [self.preview addGestureRecognizer:tap];
+    [self.view addGestureRecognizer:tap];
     
     [self initUI];
     
@@ -115,9 +127,9 @@ OFAPhotoMiniViewDelegate
 
 - (void)tapToFocus:(UITapGestureRecognizer *)tap {
     CGPoint point = [tap locationInView:tap.view];
-    CGPoint devicePoint = [self.preview.videoPreviewLayer captureDevicePointOfInterestForPoint:[tap locationInView:tap.view]];
-    [self.camera focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:YES];
-    [self layerAnimationWithPoint:point];
+//    CGPoint devicePoint = [self.preview.videoPreviewLayer captureDevicePointOfInterestForPoint:[tap locationInView:tap.view]];
+//    [self.camera focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:YES];
+//    [self layerAnimationWithPoint:point];
     UIImpactFeedbackGenerator *impactFeedBack = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
     [impactFeedBack prepare];
     [impactFeedBack impactOccurred];
@@ -147,7 +159,7 @@ OFAPhotoMiniViewDelegate
     _focuslayer1.lineWidth = 2;
     _focuslayer1.strokeColor = [UIColor colorWithWhite:1 alpha:0.3].CGColor;
     _focuslayer1.fillColor = [UIColor clearColor].CGColor;
-    [self.preview.layer addSublayer:_focuslayer1];
+    [self.view.layer addSublayer:_focuslayer1];
     
     _focuslayer2.position = point;
     CGFloat width2 = 14.f;
@@ -157,7 +169,7 @@ OFAPhotoMiniViewDelegate
     _focuslayer2.lineWidth = 2;
     _focuslayer2.strokeColor = [UIColor whiteColor].CGColor;
     _focuslayer2.fillColor = [UIColor clearColor].CGColor;
-    [self.preview.layer addSublayer:_focuslayer2];
+    [self.view.layer addSublayer:_focuslayer2];
     
     CABasicAnimation *anim = [CABasicAnimation animation];
     anim.keyPath = @"opacity";
@@ -211,18 +223,6 @@ OFAPhotoMiniViewDelegate
     }
     return _miniView;
 }
-
-- (OFACameraPreviewView *)preview {
-    if (!_preview) {
-        _preview = [[OFACameraPreviewView alloc] initWithFrame:CGRectZero];
-        [self.view addSubview:_preview];
-        [_preview mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
-        }];
-    }
-    return _preview;
-}
-
 
 - (UIButton *)backBtn {
     if (!_backBtn) {
@@ -364,6 +364,36 @@ OFAPhotoMiniViewDelegate
 }
 
 #pragma mark OFAStillCameraDelegate
+- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+    @autoreleasepool {
+        CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        CIImage *result = [CIImage imageWithCVPixelBuffer:imageBuffer];
+        
+        CIFilter * hudAdjust  = [CIFilter filterWithName:@"CIHueAdjust"];
+        [hudAdjust setDefaults];
+        [hudAdjust setValue:result forKey:@"inputImage"];
+        [hudAdjust setValue:[NSNumber numberWithFloat:8.094] forKey: @"inputAngle"];
+        result = hudAdjust.outputImage;
+        
+        CGRect cropRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(self.glView.drawableWidth, self.glView.drawableHeight), result.extent);
+        result = [result imageByCroppingToRect:cropRect];
+        result = [result imageByApplyingTransform:CGAffineTransformMakeTranslation(0, -result.extent.origin.y)];
+        
+        if (self.glContext != EAGLContext.currentContext) {
+            glFlush();
+            [EAGLContext setCurrentContext:self.glContext];
+        }
+        
+        [self.glView bindDrawable];
+        glClearColor(0, 0, 0, 1);
+        
+        glEnable(0x0BE2);
+        glBlendFunc(1, 0x0303);
+        
+        [self.ciContext drawImage:result inRect:CGRectMake(0, 0, self.glView.drawableWidth, self.glView.drawableHeight) fromRect:result.extent];
+        [self.glView display];
+    }
+}
 
 - (void)captureDidFinishProcessingPhotoAsJPEGImage:(nullable UIImage *)photo error:(nullable NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^(){
@@ -373,9 +403,9 @@ OFAPhotoMiniViewDelegate
 
 - (void)captureAnimation {
     dispatch_async( dispatch_get_main_queue(), ^{
-        self.preview.videoPreviewLayer.opacity = 0.0;
+        self.view.layer.opacity = 0.0;
         [UIView animateWithDuration:0.2 animations:^{
-            self.preview.videoPreviewLayer.opacity = 1.0;
+            self.view.layer.opacity = 1.0;
         }];
     } );
 }

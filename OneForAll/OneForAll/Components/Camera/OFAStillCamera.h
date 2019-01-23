@@ -21,6 +21,8 @@ typedef NS_ENUM( NSInteger, OFACameraSetupResult ) {
 
 @optional
 
+- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection;
+
 - (void)captureDidFinishProcessingPhotoAsJPEGImage:(nullable UIImage *)photo error:(nullable NSError *)error;
 - (void)captureAnimation;
 

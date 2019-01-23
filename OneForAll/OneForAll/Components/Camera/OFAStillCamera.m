@@ -9,17 +9,20 @@
 #import "OFAStillCamera.h"
 #import "OFAPhotoCaptureDelegate.h"
 @interface OFAStillCamera ()<
-    AVCapturePhotoCaptureDelegate
+    AVCapturePhotoCaptureDelegate,
+    AVCaptureVideoDataOutputSampleBufferDelegate
 >
 {
     AVCaptureSession *_session;
     AVCaptureDeviceDiscoverySession *_videoDeviceDiscoverySession;
     AVCaptureDeviceInput *_videoInput;
     AVCapturePhotoOutput *_photoOutput;
+    AVCaptureVideoDataOutput *_videoDataOutPut;
 }
 
 @property (nonatomic) NSMutableDictionary<NSNumber *, OFAPhotoCaptureDelegate*> *inProgressPhotoCaptureDelegates;
 @property (nonatomic) dispatch_queue_t sessionQueue;
+@property (nonatomic) dispatch_queue_t dataOutputQueue;
 
 
 @end
@@ -255,6 +258,7 @@
         [self->_session beginConfiguration];
         if (![self setupSessionInput]) return;
         if (![self setupSessionOutPut]) return;
+        if (![self setupDataOutput]) return;
         [self->_session commitConfiguration];
     } );
 }
@@ -307,6 +311,33 @@
         return NO;
     }
     return YES;
+}
+
+- (BOOL)setupDataOutput {
+    self.dataOutputQueue = dispatch_queue_create("DataOutPutQueue", DISPATCH_QUEUE_SERIAL);
+    _videoDataOutPut = [[AVCaptureVideoDataOutput alloc] init];
+    NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   [NSNumber numberWithInt:kCVPixelFormatType_32BGRA], kCVPixelBufferPixelFormatTypeKey,
+                                   nil];
+    _videoDataOutPut.videoSettings = videoSettings;
+    [_videoDataOutPut setAlwaysDiscardsLateVideoFrames:YES];
+    [_videoDataOutPut setSampleBufferDelegate:self queue:self.dataOutputQueue];
+    if ([self.session canAddOutput:_videoDataOutPut]) {
+        [self.session addOutput:_videoDataOutPut];
+    } else {
+        return NO;
+    }
+    AVCaptureConnection *connection = [_videoDataOutPut connectionWithMediaType:AVMediaTypeVideo];
+    connection.videoOrientation = AVCaptureVideoOrientationPortrait;
+    return YES;
+}
+
+
+#pragma mark AVCaptureVideoDataOutputSampleBufferDelegate
+- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(captureOutput:didOutputSampleBuffer:fromConnection:)]) {
+        [self.delegate captureOutput:output didOutputSampleBuffer:sampleBuffer fromConnection:connection];
+    }
 }
 
 #pragma mark Set - get

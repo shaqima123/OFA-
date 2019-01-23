@@ -32,7 +32,7 @@ UICollectionViewDataSource
 }
 
 - (void)initData {
-    self.dataArray = @[@"相机",@"实验室"];
+    self.dataArray = @[@"AV相机",@"CI相机",@"实验室"];
     
 }
 
@@ -83,10 +83,14 @@ UICollectionViewDataSource
         cell.bgImageView.image = [UIImage imageNamed:@"img_home_camera"];
     }
     if (indexPath.row == 1) {
+        cell.iconImage.image = [UIImage imageNamed:@"btn_home_camera"];
+        cell.bgImageView.image = [UIImage imageNamed:@"img_home_camera"];
+    }
+    if (indexPath.row == 2) {
         cell.iconImage.image = [UIImage imageNamed:@"btn_home_lab"];
         cell.bgImageView.image = [UIImage imageNamed:@"img_home_lab"];
     }
-    
+  
     cell.funcName.text = (NSString *)[self.dataArray objectAtIndex:indexPath.row];
     cell.backgroundColor = [UIColor randomColor];
     return cell;
