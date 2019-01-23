@@ -126,10 +126,25 @@ OFAPhotoMiniViewDelegate
 }
 
 - (void)tapToFocus:(UITapGestureRecognizer *)tap {
-    CGPoint point = [tap locationInView:tap.view];
-//    CGPoint devicePoint = [self.preview.videoPreviewLayer captureDevicePointOfInterestForPoint:[tap locationInView:tap.view]];
-//    [self.camera focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:YES];
-//    [self layerAnimationWithPoint:point];
+    CGPoint touchPoint = [tap locationInView:tap.view];
+    switch (self.camera.currentDevicePosition) {
+        case AVCaptureDevicePositionUnspecified:
+            break;
+        case AVCaptureDevicePositionBack:
+        {
+            touchPoint = CGPointMake( touchPoint.y / self.view.bounds.size.height ,1-touchPoint.x/self.view.bounds.size.width);
+        }
+            break;
+        case AVCaptureDevicePositionFront:
+        {
+            touchPoint = CGPointMake(touchPoint.y / self.view.bounds.size.height ,touchPoint.x/self.view.bounds.size.width);
+        }
+            break;
+        default:
+            break;
+    }
+    [self.camera focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:touchPoint monitorSubjectAreaChange:YES];
+    [self layerAnimationWithPoint:[tap locationInView:tap.view]];
     UIImpactFeedbackGenerator *impactFeedBack = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
     [impactFeedBack prepare];
     [impactFeedBack impactOccurred];

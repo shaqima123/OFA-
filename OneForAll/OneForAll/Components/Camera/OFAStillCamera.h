@@ -33,6 +33,9 @@ typedef NS_ENUM( NSInteger, OFACameraSetupResult ) {
 @property (nonatomic, strong, readonly) AVCaptureSession* session;
 @property (nonatomic, assign) OFACameraSetupResult setupResult;
 
+@property (nonatomic, strong, readonly) AVCaptureDevice *device;
+@property (nonatomic, assign, readonly) AVCaptureDevicePosition currentDevicePosition;
+
 - (void)startCamera;
 - (void)stopCamera;
 

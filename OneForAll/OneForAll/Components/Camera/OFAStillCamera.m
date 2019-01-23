@@ -24,6 +24,8 @@
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic) dispatch_queue_t dataOutputQueue;
 
+@property (nonatomic, strong) AVCaptureDevice *device;
+@property (nonatomic, assign) AVCaptureDevicePosition currentDevicePosition;
 
 @end
 
@@ -150,6 +152,8 @@
         
         if ( newVideoDevice ) {
             AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:newVideoDevice error:NULL];
+            self.device = newVideoDevice;
+            self.currentDevicePosition = newVideoDevice.position;
             
             [self.session beginConfiguration];
             
@@ -277,6 +281,8 @@
         }
     }
     _videoInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
+    self.device = videoDevice;
+    self.currentDevicePosition = videoDevice.position;
     if (!_videoInput) {
         NSLog(@"DeviceInput Error,%@",error.description);
         self.setupResult = OFACameraSetupResultFailed;
