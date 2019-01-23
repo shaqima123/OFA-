@@ -159,6 +159,7 @@
             
             // Remove the existing device input first, since using the front and back camera simultaneously is not supported.
             [self.session removeInput:self->_videoInput];
+            [self.session removeOutput:self-> _videoDataOutPut];
             
             if ( [self.session canAddInput:videoDeviceInput] ) {
                 [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:currentVideoDevice];
@@ -170,6 +171,13 @@
             }
             else {
                 [self.session addInput:self ->_videoInput];
+            }
+            
+            //转置摄像头重新添加dataoutput，重置connection为正向
+            if ([self.session canAddOutput:self->_videoDataOutPut]) {
+                [self.session addOutput:self->_videoDataOutPut];
+                AVCaptureConnection *connection = [self->_videoDataOutPut connectionWithMediaType:AVMediaTypeVideo];
+                connection.videoOrientation = AVCaptureVideoOrientationPortrait;
             }
             [self.session commitConfiguration];
         }
@@ -337,7 +345,6 @@
     connection.videoOrientation = AVCaptureVideoOrientationPortrait;
     return YES;
 }
-
 
 #pragma mark AVCaptureVideoDataOutputSampleBufferDelegate
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
