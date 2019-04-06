@@ -7,7 +7,6 @@
 //
 
 #import "OFAHomeViewController.h"
-#import "OFALabPickStarViewController.h"
 #import "OFACameraChooseViewController.h"
 #import "OFALabChooseViewController.h"
 
@@ -109,8 +108,8 @@ UICollectionViewDataSource
         [self.navigationController pushViewController:cameraChooseController animated:YES];
     }
     if (indexPath.row == 1) {
-        OFALabPickStarViewController *pickStarViewController = [[OFALabPickStarViewController alloc] init];
-        [self presentViewController:pickStarViewController animated:YES completion:nil];
+        OFALabChooseViewController * labChooseController = [[OFALabChooseViewController alloc] init];
+        [self.navigationController pushViewController:labChooseController animated:YES];
     }
 }
 
