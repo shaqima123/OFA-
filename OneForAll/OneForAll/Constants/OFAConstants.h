@@ -27,3 +27,4 @@ static const int OFADecoderOpenCodecError = -8003;//打开codec失败
 
 static const int OFAFrameCreateError = -8004;//创建avframe失败
 static const int OFADecodeReSampleError = -8005;//重采样错误
+static const int OFAScalerCreateError = -8006;//Scaler 创建错误
