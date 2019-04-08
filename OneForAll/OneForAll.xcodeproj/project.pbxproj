@@ -58,6 +58,7 @@
 		4FE3930D2259F08700FD65A1 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE3930C2259F08700FD65A1 /* libbz2.tbd */; };
 		4FE3930F2259F09200FD65A1 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE3930E2259F09200FD65A1 /* libz.tbd */; };
 		4FE393132259F10A00FD65A1 /* OFAMediaDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE393112259F10900FD65A1 /* OFAMediaDecoder.m */; };
+		4FE39316225A164B00FD65A1 /* NSError+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE39314225A164B00FD65A1 /* NSError+Util.m */; };
 		FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */; };
 /* End PBXBuildFile section */
 
@@ -276,6 +277,8 @@
 		4FE3930E2259F09200FD65A1 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4FE393112259F10900FD65A1 /* OFAMediaDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFAMediaDecoder.m; sourceTree = "<group>"; };
 		4FE393122259F10900FD65A1 /* OFAMediaDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFAMediaDecoder.h; sourceTree = "<group>"; };
+		4FE39314225A164B00FD65A1 /* NSError+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+Util.m"; sourceTree = "<group>"; };
+		4FE39315225A164B00FD65A1 /* NSError+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Util.h"; sourceTree = "<group>"; };
 		6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneForAll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -434,6 +437,8 @@
 		4F2E5E3321104374002C4101 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				4FE39315225A164B00FD65A1 /* NSError+Util.h */,
+				4FE39314225A164B00FD65A1 /* NSError+Util.m */,
 				4F49A1FB215CE30E004835BC /* OFAUtils.h */,
 				4F49A1FC215CE30E004835BC /* OFAUtils.m */,
 				4F428C0A211D6AFA004F66B3 /* PHAsset+extension.h */,
@@ -1036,6 +1041,7 @@
 				4F9FDE832126C10B0017B72C /* OFAVideoCamera.m in Sources */,
 				4F49A1FD215CE30E004835BC /* OFAUtils.m in Sources */,
 				4F0FB0442155EDCA00EBD96C /* OFACameraChooseViewController.m in Sources */,
+				4FE39316225A164B00FD65A1 /* NSError+Util.m in Sources */,
 				4F428C2D211F1C23004F66B3 /* OFACameraViewController.m in Sources */,
 				4F2E5DFD211040D4002C4101 /* AppDelegate.m in Sources */,
 			);

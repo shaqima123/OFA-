@@ -16,3 +16,14 @@ static NSString * kOFAHomeCell = @"OFAHomeCell";
 
 static NSString * kOFACameraChooseCell = @"OFACameraChooseCell";
 
+
+
+#pragma mark ErrorCode
+//[-8000,-9000)范围内为 media 编解码失败 code
+static const int OFADecoderOpenInputError = -8000;//打开文件失败
+static const int OFADecoderFindStreamError = -8001;//寻找音频或者视频流失败
+static const int OFADecoderFindDecoderError = -8002;//寻找解码器失败
+static const int OFADecoderOpenCodecError = -8003;//打开codec失败
+
+static const int OFAFrameCreateError = -8004;//创建avframe失败
+static const int OFADecodeReSampleError = -8005;//重采样错误
