@@ -8,6 +8,7 @@
 
 #import "OFALabChooseViewController.h"
 #import "OFALabPickStarViewController.h"
+#import "OFAMediaPlayerViewController.h"
 
 @interface OFALabChooseViewController ()<
 UITableViewDelegate,
@@ -97,7 +98,8 @@ UITableViewDataSource
     }
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
-           
+            OFAMediaPlayerViewController *playerViewController = [[OFAMediaPlayerViewController alloc] init];
+            [self presentViewController:playerViewController animated:YES completion:nil];
         }
     }
 }

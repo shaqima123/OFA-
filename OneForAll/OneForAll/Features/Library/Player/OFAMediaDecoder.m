@@ -66,6 +66,16 @@
 @property (nonatomic, assign) int totalVideoFramecount;
 
 @property (nonatomic, assign) CGFloat decodePosition;
+@property (nonatomic, assign) CGFloat fps;
+
+@property (nonatomic, assign) CGFloat videoTimeBase;
+@property (nonatomic, assign) CGFloat audioTimeBase;
+
+@property (nonatomic, assign) int connectionRetry;
+
+@property (nonatomic,strong) NSLock *lock;
+@property (nonatomic,strong) NSString *audioStorePath;
+@property (nonatomic,strong) NSString *videoStorePath;
 
 @end
 @implementation OFAMediaDecoder
@@ -81,6 +91,35 @@ static NSData * copyFrameData(UInt8 *src, int linesize, int width, int height)
         src += linesize;
     }
     return md;
+}
+
+static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *pFPS, CGFloat *pTimeBase)
+{
+    CGFloat fps, timebase;
+    
+    if (st->time_base.den && st->time_base.num)
+        timebase = av_q2d(st->time_base);
+    else if(st->codec->time_base.den && st->codec->time_base.num)
+        timebase = av_q2d(st->codec->time_base);
+    else
+        timebase = defaultTimeBase;
+    
+    if (st->codec->ticks_per_frame != 1) {
+        NSLog(@"WARNING: st.codec.ticks_per_frame=%d", st->codec->ticks_per_frame);
+        //timebase *= st->codec->ticks_per_frame;
+    }
+    
+    if (st->avg_frame_rate.den && st->avg_frame_rate.num)
+        fps = av_q2d(st->avg_frame_rate);
+    else if (st->r_frame_rate.den && st->r_frame_rate.num)
+        fps = av_q2d(st->r_frame_rate);
+    else
+        fps = 1.0 / timebase;
+    
+    if (pFPS)
+        *pFPS = fps;
+    if (pTimeBase)
+        *pTimeBase = timebase;
 }
 
 static int interrupt_callback(void *ctx)
@@ -132,6 +171,12 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
     _subscribeTimeOutTimeInSecs = SUBSCRIBE_VIDEO_DATA_TIME_OUT;
     _readLastestFrameTime = [[NSDate date] timeIntervalSince1970];
     _totalVideoFramecount = 0;
+    _connectionRetry = 0;
+    self.audioStorePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/audioData.pcm"];
+    self.videoStorePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/videoData.yuv"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.audioStorePath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:self.audioStorePath error:nil];
+    }
 }
 
 - (void)protocolParser {
@@ -142,7 +187,10 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
     
 }
 
-- (void)openFile:(NSURL *)fileURL parameter:(NSDictionary *)parameters error:(NSError **)error {
+- (void)openFile:(NSURL *)fileURL parameter:(NSDictionary *)parameters {
+    
+    [self setupParameters];
+    
     //将所有编码器注册到ffmpeg中，内部包含 avcodec_register_all 方法。
     av_register_all();
     
@@ -161,6 +209,8 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
         return;
     }
     
+    [self initAnalyzeDurationAndProbesize:formatCtx parameter:parameters];
+    
     //寻找Stream
     int findStreamErrCode = 0;
     if ((findStreamErrCode = avformat_find_stream_info(formatCtx, NULL)) < 0) {
@@ -175,15 +225,32 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
     
     //---------
     //解码音频和视频
-    if (![self openVideoStream] || [self openAudioStream]) {
+    if (![self openVideoStream] || ![self openAudioStream]) {
         // 视频和音频任何一方解封装失败则关闭文件返回
         [self closeFile];
     }
     
     NSInteger videoWidth = [self frameWidth];
     NSInteger videoHeight = [self frameHeight];
-    //TODO：重试逻辑
     
+}
+
+- (void)initAnalyzeDurationAndProbesize:(AVFormatContext *)formatCtx parameter:(NSDictionary*) parameters
+{
+    float probeSize = [parameters[PROBE_SIZE] floatValue];
+    formatCtx->probesize = probeSize ?: 50 * 1024;
+    NSArray* durations = parameters[MAX_ANALYZE_DURATION_ARRAY];
+    if (durations && durations.count > _connectionRetry) {
+        formatCtx->max_analyze_duration = [durations[_connectionRetry] floatValue];
+    } else {
+        float multiplier = 0.5 + (double)pow(2.0, (double)_connectionRetry) * 0.25;
+        formatCtx->max_analyze_duration = multiplier * AV_TIME_BASE;
+    }
+    //    formatCtx->max_analyze_duration = 75000;
+    BOOL fpsProbeSizeConfiged = [parameters[FPS_PROBE_SIZE_CONFIGURED] boolValue];
+    if(fpsProbeSizeConfiged){
+        formatCtx->fps_probe_size = 3;
+    }
 }
 
 - (int)avformatOpenInput:(AVFormatContext **)formatContext path:(NSString *)path parameter:(NSDictionary*) params {
@@ -211,11 +278,14 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
     if (self.videoStreamIndexs.count) {
         //stream 中的 codecContext 将弃用，用 AVCodecParameters 代替
         int index = ((NSNumber *)[self.videoStreamIndexs objectAtIndex:0]).intValue;
-        AVCodecParameters *codecParam = self.formatCtx->streams[index]->codecpar;
-        AVCodec *codec = avcodec_find_decoder(codecParam->codec_id);
-        AVCodecContext *codecCtx = avcodec_alloc_context3(codec);
+        AVCodecContext *codecCtx = _formatCtx->streams[index]->codec;
+        AVCodec *codec = avcodec_find_decoder(codecCtx->codec_id);
+//        AVCodecParameters *codecParam = self.formatCtx->streams[index]->codecpar;
+//        AVCodec *codec = avcodec_find_decoder(codecParam->codec_id);
+//        AVCodecContext *codecCtx = avcodec_alloc_context3(codec);
         if (!codec) {
-            NSString *errString = [NSString stringWithFormat:@"MediaDecoder: Find Video Decoder Failed codec_id %d", codecParam->codec_id];
+//            NSString *errString = [NSString stringWithFormat:@"MediaDecoder: Find Video Decoder Failed codec_id %d", codecParam->codec_id];
+            NSString *errString = [NSString stringWithFormat:@"MediaDecoder: Find Video Decoder Failed codec_id %d", codecCtx->codec_id];
             [self dealThingsWhenErrorOccurs:errString code:OFADecoderFindDecoderError];
             return NO;
         }
@@ -237,6 +307,10 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
         
         self.videoStreamIndex = index;
         self.videoCodecCtx = codecCtx;
+        
+        AVStream *st = self.formatCtx->streams[index];
+        avStreamFPSTimeBase(st, 0.04, &_fps, &_videoTimeBase);
+        
         //此处可以增加解码的fps
     }
     return YES;
@@ -248,12 +322,16 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
     if (self.audioStreamIndexs.count) {
         //stream 中的 codecContext 将弃用，用 AVCodecParameters 代替
         int index = ((NSNumber *)[self.audioStreamIndexs objectAtIndex:0]).intValue;
-        AVCodecParameters *codecParam = self.formatCtx->streams[index]->codecpar;
-        AVCodec *codec = avcodec_find_decoder(codecParam->codec_id);
-        AVCodecContext *codecCtx = avcodec_alloc_context3(codec);
+        AVCodecContext *codecCtx = _formatCtx->streams[index]->codec;
+        AVCodec *codec = avcodec_find_decoder(codecCtx->codec_id);
+
+//        AVCodecParameters *codecParam = self.formatCtx->streams[index]->codecpar;
+//        AVCodec *codec = avcodec_find_decoder(codecParam->codec_id);
+//        AVCodecContext *codecCtx = avcodec_alloc_context3(codec);
 
         if (!codec) {
-            NSString *errString = [NSString stringWithFormat:@"MediaDecoder: Find Audio Decoder Failed codec_id %d", codecParam->codec_id];
+            NSString *errString = [NSString stringWithFormat:@"MediaDecoder: Find Video Decoder Failed codec_id %d", codecCtx->codec_id];
+//            NSString *errString = [NSString stringWithFormat:@"MediaDecoder: Find Audio Decoder Failed codec_id %d", codecParam->codec_id];
             [self dealThingsWhenErrorOccurs:errString code:OFADecoderFindDecoderError];
             return NO;
         }
@@ -305,7 +383,9 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
         self.swrContext = swrContext;
         self.audioStreamIndex = index;
         self.audioCodecCtx = codecCtx;
-        //此处可以增加解码的fps检测
+        
+        AVStream *st = self.formatCtx->streams[_audioStreamIndex];
+        avStreamFPSTimeBase(st, 0.025, 0, &_audioTimeBase);
     }
     return YES;
 }
@@ -451,18 +531,22 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
                                       _videoCodecCtx->width / 2,
                                       _videoCodecCtx->height / 2);
     }
+    
+    [self writeData:frame.luma toPath:self.videoStorePath];
+    [self writeData:frame.chromaB toPath:self.videoStorePath];
+    [self writeData:frame.chromaR toPath:self.videoStorePath];
+    
     frame.width = _videoCodecCtx->width;
     frame.height = _videoCodecCtx->height;
     frame.linesize = _videoFrame->linesize[0];
     frame.type = OFAVideoFrameType;
-//    frame.position = av_frame_get_best_effort_timestamp(self.videoFrame) * _videoTimeBase;
+    frame.position = av_frame_get_best_effort_timestamp(self.videoFrame) * _videoTimeBase;
     const int64_t frameDuration = av_frame_get_pkt_duration(self.videoFrame);
     if (frameDuration) {
-    //TODO:完善
-//        frame.duration = frameDuration * _videoTimeBase;
-//        frame.duration += _videoFrame->repeat_pict * _videoTimeBase * 0.5;
+        frame.duration = frameDuration * _videoTimeBase;
+        frame.duration += _videoFrame->repeat_pict * _videoTimeBase * 0.5;
     } else {
-//        frame.duration = 1.0 / _fps;
+        frame.duration = 1.0 / _fps;
     }
     
     return frame;
@@ -508,11 +592,14 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
     NSMutableData *pcmData = [NSMutableData dataWithLength:numElements * sizeof(SInt16)];
     memcpy(pcmData.mutableBytes, audioData, numElements * sizeof(SInt16));
     OFAAudioFrame *frame = [[OFAAudioFrame alloc] init];
-    //TODO:添加上去
-//    frame.position = av_frame_get_best_effort_timestamp(_audioFrame) * _audioTimeBase;
-//    frame.duration = av_frame_get_pkt_duration(_audioFrame) * _audioTimeBase;
+    frame.position = av_frame_get_best_effort_timestamp(_audioFrame) * _audioTimeBase;
+    frame.duration = av_frame_get_pkt_duration(_audioFrame) * _audioTimeBase;
     frame.samples = pcmData;
     frame.type = OFAAudioFrameType;
+    
+    int audioDataLen = numFrames * numChannels * 16 / 8;
+    [self writeBytes:audioData len:audioDataLen toPath:self.audioStorePath];
+
     return frame;
 }
 - (BOOL)setupScaler
@@ -630,6 +717,33 @@ static NSArray *collectStreamIndexs(AVFormatContext *formatCtx, enum AVMediaType
 - (void)dealThingsWhenErrorOccurs:(NSString*)errString code:(NSInteger)errCode {
     NSLog(@"%@",errString);
     NSError *error = [NSError errorWithString:errString code:errCode];
-    self.errorBlock(error);
+    if (self.errorBlock) {
+        self.errorBlock(error);
+    }
 }
+
+
+#pragma mark test
+- (void)writeBytes:(void *)bytes len:(NSUInteger)len toPath:(NSString *)path
+{
+    NSData *data = [NSData dataWithBytes:bytes length:len];
+    [self writeData:data toPath:path];
+}
+
+- (void)writeData:(NSData *)data toPath:(NSString *)path
+{
+    [self.lock lock];
+    
+    NSString *savePath = path;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:savePath] == false)
+    {
+        [[NSFileManager defaultManager] createFileAtPath:savePath contents:nil attributes:nil];
+    }
+    NSFileHandle * handle = [NSFileHandle fileHandleForWritingAtPath:savePath];
+    [handle seekToEndOfFile];
+    [handle writeData:data];
+    
+    [self.lock unlock];
+}
+
 @end

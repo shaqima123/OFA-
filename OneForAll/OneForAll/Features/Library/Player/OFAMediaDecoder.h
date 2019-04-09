@@ -16,6 +16,18 @@
 #define RTMP_TCURL_KEY                              @"RTMP_TCURL_KEY"
 #endif
 
+#ifndef PROBE_SIZE
+#define PROBE_SIZE                                  @"PROBE_SIZE"
+#endif
+
+#ifndef MAX_ANALYZE_DURATION_ARRAY
+#define MAX_ANALYZE_DURATION_ARRAY                  @"MAX_ANALYZE_DURATION_ARRAY"
+#endif
+
+#ifndef FPS_PROBE_SIZE_CONFIGURED
+#define FPS_PROBE_SIZE_CONFIGURED                   @"FPS_PROBE_SIZE_CONFIGURED"
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OFAMediaDecoderError)(NSError *error);
@@ -28,6 +40,10 @@ typedef enum {
 @interface OFAMediaDecoder : NSObject
 
 @property (nonatomic, copy) OFAMediaDecoderError errorBlock;
+
+- (NSArray *)decodeFrame:(NSTimeInterval)duration;
+
+- (void)openFile:(NSURL *)fileURL parameter:(NSDictionary *)parameters;
 
 @end
 

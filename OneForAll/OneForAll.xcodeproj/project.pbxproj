@@ -44,6 +44,8 @@
 		4F9FDEB02127B98C0017B72C /* pickStar.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDEAF2127B98B0017B72C /* pickStar.mp3 */; };
 		4F9FDEB32127C6DC0017B72C /* RSVideoAddMusicCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FDEB22127C6DC0017B72C /* RSVideoAddMusicCommand.m */; };
 		4F9FDEB52127CFA50017B72C /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F9FDEB42127CFA50017B72C /* 6.jpg */; };
+		4FC709AF225C845E00AFD204 /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4FC709AE225C845E00AFD204 /* test.mp4 */; };
+		4FC709B2225C849000AFD204 /* OFAMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC709B1225C849000AFD204 /* OFAMediaPlayerViewController.m */; };
 		4FE392FD2259EE7900FD65A1 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE392F62259EE7900FD65A1 /* libavutil.a */; };
 		4FE392FE2259EE7900FD65A1 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE392F72259EE7900FD65A1 /* libavfilter.a */; };
 		4FE392FF2259EE7900FD65A1 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE392F82259EE7900FD65A1 /* libavcodec.a */; };
@@ -151,6 +153,9 @@
 		4F9FDEB12127C6DC0017B72C /* RSVideoAddMusicCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSVideoAddMusicCommand.h; sourceTree = "<group>"; };
 		4F9FDEB22127C6DC0017B72C /* RSVideoAddMusicCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSVideoAddMusicCommand.m; sourceTree = "<group>"; };
 		4F9FDEB42127CFA50017B72C /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
+		4FC709AE225C845E00AFD204 /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
+		4FC709B0225C849000AFD204 /* OFAMediaPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAMediaPlayerViewController.h; sourceTree = "<group>"; };
+		4FC709B1225C849000AFD204 /* OFAMediaPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAMediaPlayerViewController.m; sourceTree = "<group>"; };
 		4FE392802259EE7800FD65A1 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		4FE392812259EE7800FD65A1 /* buffersrc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffersrc.h; sourceTree = "<group>"; };
 		4FE392822259EE7800FD65A1 /* buffersink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffersink.h; sourceTree = "<group>"; };
@@ -786,8 +791,11 @@
 		4FE393102259F10900FD65A1 /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				4FC709AE225C845E00AFD204 /* test.mp4 */,
 				4FE393112259F10900FD65A1 /* OFAMediaDecoder.m */,
 				4FE393122259F10900FD65A1 /* OFAMediaDecoder.h */,
+				4FC709B0225C849000AFD204 /* OFAMediaPlayerViewController.h */,
+				4FC709B1225C849000AFD204 /* OFAMediaPlayerViewController.m */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -928,6 +936,7 @@
 				4F2E5E08211040D5002C4101 /* LaunchScreen.storyboard in Resources */,
 				4F9FDEAE21273ADA0017B72C /* pickStarMask.png in Resources */,
 				4F2E5E05211040D5002C4101 /* Assets.xcassets in Resources */,
+				4FC709AF225C845E00AFD204 /* test.mp4 in Resources */,
 				4F9FDEA3212728FF0017B72C /* 2.png in Resources */,
 				4F9FDEB02127B98C0017B72C /* pickStar.mp3 in Resources */,
 				4F9FDEA1212728FF0017B72C /* 3.png in Resources */,
@@ -1040,6 +1049,7 @@
 				4F428C24211EADA9004F66B3 /* OFAStillCamera.m in Sources */,
 				4F9FDE832126C10B0017B72C /* OFAVideoCamera.m in Sources */,
 				4F49A1FD215CE30E004835BC /* OFAUtils.m in Sources */,
+				4FC709B2225C849000AFD204 /* OFAMediaPlayerViewController.m in Sources */,
 				4F0FB0442155EDCA00EBD96C /* OFACameraChooseViewController.m in Sources */,
 				4FE39316225A164B00FD65A1 /* NSError+Util.m in Sources */,
 				4F428C2D211F1C23004F66B3 /* OFACameraViewController.m in Sources */,
