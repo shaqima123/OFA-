@@ -14,6 +14,10 @@
 //View
 #import "OFAPhotoMiniView.h"
 
+//Controller
+#import "OFAPhotoEditViewController.h"
+
+
 @interface OFACameraViewController ()<
 OFAStillCameraDelegate,
 OFAPhotoMiniViewDelegate
@@ -435,6 +439,8 @@ OFAPhotoMiniViewDelegate
 
 - (void)miniViewTapped {
     NSLog(@"MiniView Tapped");
+    OFAPhotoEditViewController *photoEditVC = [[OFAPhotoEditViewController alloc] init];
+    [self.navigationController pushViewController:photoEditVC animated:YES];
 }
 
 @end

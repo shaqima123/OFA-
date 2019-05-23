@@ -93,9 +93,14 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             OFACameraViewController *cameraViewController = [[OFACameraViewController alloc] init];
-            [self presentViewController:cameraViewController animated:NO completion:nil];
+            
+            UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+            [navigationVC setNavigationBarHidden:YES];
+            navigationVC.interactivePopGestureRecognizer.enabled = NO;
+            [self presentViewController:navigationVC animated:NO completion:nil];
         }
     }
+    
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             OFAVideoCameraViewController *videoCameraViewController = [[OFAVideoCameraViewController alloc] init];

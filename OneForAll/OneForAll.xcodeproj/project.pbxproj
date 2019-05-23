@@ -61,6 +61,7 @@
 		4FE3930F2259F09200FD65A1 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE3930E2259F09200FD65A1 /* libz.tbd */; };
 		4FE393132259F10A00FD65A1 /* OFAMediaDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE393112259F10900FD65A1 /* OFAMediaDecoder.m */; };
 		4FE39316225A164B00FD65A1 /* NSError+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE39314225A164B00FD65A1 /* NSError+Util.m */; };
+		62ADA44922967D41005C3621 /* OFAPhotoEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62ADA44822967D41005C3621 /* OFAPhotoEditViewController.m */; };
 		FEFFEF4A880F8EDCC377CDB4 /* libPods-OneForAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */; };
 /* End PBXBuildFile section */
 
@@ -284,6 +285,8 @@
 		4FE393122259F10900FD65A1 /* OFAMediaDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFAMediaDecoder.h; sourceTree = "<group>"; };
 		4FE39314225A164B00FD65A1 /* NSError+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+Util.m"; sourceTree = "<group>"; };
 		4FE39315225A164B00FD65A1 /* NSError+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Util.h"; sourceTree = "<group>"; };
+		62ADA44722967D41005C3621 /* OFAPhotoEditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFAPhotoEditViewController.h; sourceTree = "<group>"; };
+		62ADA44822967D41005C3621 /* OFAPhotoEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFAPhotoEditViewController.m; sourceTree = "<group>"; };
 		6C8CE8AB3D0A728F44165A66 /* libPods-OneForAll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneForAll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -425,6 +428,7 @@
 		4F2E5E3121104374002C4101 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				62ADA44622967CFB005C3621 /* Edit */,
 				4F2E5E372110451A002C4101 /* Camera */,
 				4F2E5E352110451A002C4101 /* Home */,
 				4F2E5E362110451A002C4101 /* Library */,
@@ -800,6 +804,15 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
+		62ADA44622967CFB005C3621 /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				62ADA44722967D41005C3621 /* OFAPhotoEditViewController.h */,
+				62ADA44822967D41005C3621 /* OFAPhotoEditViewController.m */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
 		7A74E72794973EC026ED0365 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1039,6 +1052,7 @@
 				4F9FDE95212706430017B72C /* RSVideoCommand.m in Sources */,
 				4F428C3D2121CB63004F66B3 /* OFAPhotoMiniView.m in Sources */,
 				4F2E5E0B211040D5002C4101 /* main.m in Sources */,
+				62ADA44922967D41005C3621 /* OFAPhotoEditViewController.m in Sources */,
 				4F0FB0472155EDDE00EBD96C /* OFALabChooseViewController.m in Sources */,
 				4F428C10211D6AFA004F66B3 /* PHAsset+extension.m in Sources */,
 				4F49A1FA215CD557004835BC /* OFAVideoCameraViewController.m in Sources */,
