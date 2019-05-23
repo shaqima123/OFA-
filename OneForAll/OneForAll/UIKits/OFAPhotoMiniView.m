@@ -14,6 +14,7 @@
     CGFloat originX;
 }
 @property (nonatomic, strong) UIImageView *photoImageView;
+@property (nonatomic, strong) UIImage *photo;
 
 @end
 @implementation OFAPhotoMiniView
@@ -52,8 +53,14 @@
     [pan addTarget:self action:@selector(actionPan:)];
     [self addGestureRecognizer:pan];
 }
+
 - (void)updatePhoto:(UIImage *)image {
+    self.photo = image;
     [self.photoImageView setImage:image];
+}
+
+- (UIImage *)getPhoto {
+    return self.photo;
 }
 
 - (void)updatePhoto {
@@ -82,8 +89,8 @@
 }
 
 - (void)actionTap:(UITapGestureRecognizer *)tap {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(miniViewTapped)]) {
-        [self.delegate miniViewTapped];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(miniViewTapped:)]) {
+        [self.delegate miniViewTapped:self];
     }
 }
 
@@ -106,8 +113,8 @@
     }
     
     if (pan.state == UIGestureRecognizerStateEnded) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(miniViewPanEnded)]) {
-            [self.delegate miniViewPanEnded];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(miniViewPanEnded:)]) {
+            [self.delegate miniViewPanEnded:self];
         }
     }
     [pan setTranslation:CGPointZero inView:self];

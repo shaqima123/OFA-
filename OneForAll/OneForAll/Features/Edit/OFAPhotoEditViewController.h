@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#import "OFAPhotoModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OFAPhotoEditViewController : UIViewController
+
+- (instancetype)initWithPhotoModel:(OFAPhotoModel *)photoModel;
 
 @end
 

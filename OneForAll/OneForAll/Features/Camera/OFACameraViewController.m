@@ -428,7 +428,7 @@ OFAPhotoMiniViewDelegate
 
 #pragma mark OFAPhotoMiniViewDelegate
 
-- (void)miniViewPanEnded {
+- (void)miniViewPanEnded:(OFAPhotoMiniView *)photoMiniView {
     [UIView animateWithDuration:0.3 animations:^{
         [self.miniView setCenter:CGPointMake(SCREEN_WIDTH + self.miniView.bounds.size.width/2, self.miniView.center.y)];
     } completion:^(BOOL finished) {
@@ -437,9 +437,14 @@ OFAPhotoMiniViewDelegate
     }];
 }
 
-- (void)miniViewTapped {
+- (void)miniViewTapped:(OFAPhotoMiniView *)photoMiniView {
     NSLog(@"MiniView Tapped");
-    OFAPhotoEditViewController *photoEditVC = [[OFAPhotoEditViewController alloc] init];
+    //初始化photoModel
+    
+    OFAPhotoModel *photoModel = [[OFAPhotoModel alloc] init];
+    photoModel.originPhoto = [photoMiniView getPhoto];
+    
+    OFAPhotoEditViewController *photoEditVC = [[OFAPhotoEditViewController alloc] initWithPhotoModel:photoModel];
     [self.navigationController pushViewController:photoEditVC animated:YES];
 }
 

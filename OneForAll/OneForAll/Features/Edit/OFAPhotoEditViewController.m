@@ -9,11 +9,24 @@
 #import "OFAPhotoEditViewController.h"
 
 @interface OFAPhotoEditViewController ()
+
+@property (nonatomic, strong) OFAPhotoModel *photoModel;
+
 @property (nonatomic, strong) UIButton *backBtn;
+@property (nonatomic, strong) UIImageView *photoImageView;
 
 @end
 
 @implementation OFAPhotoEditViewController
+
+- (instancetype)initWithPhotoModel:(OFAPhotoModel *)photoModel
+{
+    self = [super init];
+    if (self) {
+        _photoModel = photoModel;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -21,6 +34,19 @@
 }
 
 - (void)setupUI {
+    self.photoImageView = ({
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [imageView setImage:self.photoModel.originPhoto];
+        [imageView setBackgroundColor:[UIColor clearColor]];
+        
+        [self.view addSubview:imageView];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+        imageView;
+    });
+    
     self.backBtn = ({
         UIButton *button = [[UIButton alloc] init];
         [button setImage:[UIImage imageNamed:@"btn_camera_quite"] forState:UIControlStateNormal];

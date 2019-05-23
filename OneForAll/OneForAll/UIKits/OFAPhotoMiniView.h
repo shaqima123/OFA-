@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+@class OFAPhotoMiniView;
 @protocol OFAPhotoMiniViewDelegate <NSObject>
 
 @optional
-- (void)miniViewTapped;
-- (void)miniViewPanEnded;
+- (void)miniViewTapped:(OFAPhotoMiniView *)photoMiniView;
+- (void)miniViewPanEnded:(OFAPhotoMiniView *)photoMiniView;
 
 @end
 
@@ -22,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<OFAPhotoMiniViewDelegate> delegate;
 
 - (void)updatePhoto:(UIImage *)image;
+- (UIImage *)getPhoto;
 
 @end
 
