@@ -384,11 +384,11 @@ OFAPhotoMiniViewDelegate
         CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
         CIImage *result = [CIImage imageWithCVPixelBuffer:imageBuffer];
         
-        CIFilter * hudAdjust  = [CIFilter filterWithName:@"CIHueAdjust"];
-        [hudAdjust setDefaults];
-        [hudAdjust setValue:result forKey:@"inputImage"];
-        [hudAdjust setValue:[NSNumber numberWithFloat:8.094] forKey: @"inputAngle"];
-        result = hudAdjust.outputImage;
+//        CIFilter * hudAdjust  = [CIFilter filterWithName:@"CIHueAdjust"];
+//        [hudAdjust setDefaults];
+//        [hudAdjust setValue:result forKey:@"inputImage"];
+//        [hudAdjust setValue:[NSNumber numberWithFloat:8.094] forKey: @"inputAngle"];
+//        result = hudAdjust.outputImage;
 
         CGRect cropRect = AVMakeRectWithAspectRatioInsideRect(result.extent.size, CGRectMake(0, 0, self.glView.drawableWidth, self.glView.drawableHeight));
         
